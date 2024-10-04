@@ -15,41 +15,43 @@ All of the fields of the tables are reported exactly as they have been defined u
     );
   ```
 - Table `services` 
-- Fields: id-name
-- Description: each service is uniquely identified through a unique id (autoincremental). In addition, the name of the service is stored in the database. I kept it separated from the following table to have a general overview of which are the services available in the office without the need of querying a bigger table.
+- Fields: id-name-averageTime
+- Description: each service is uniquely identified through a unique id (autoincremental). In addition, the name of the service is stored in the database and also the average time needed to serve it. I kept it separated from the following table to have a general overview of which are the services available in the office without the need of querying a bigger table.
   ```
-    CREATE TABLE "services" (
+   	CREATE TABLE "services" (
 	"id"	INTEGER NOT NULL UNIQUE,
 	"name"	INTEGER NOT NULL,
+	"averageTime"	INTEGER NOT NULL,
 	PRIMARY KEY("id" AUTOINCREMENT)
-    );
+	);
   ```
 
-- Table `servecesPerOffice`
+- Table `servecesPerCounter`
 - Fields: officeId-serviceId
-- Description: We store the relations between different offices (represented by an integer that is the officeId) and the serviceId, that is an integer that references the table 'services', the name of the service could be found by querying the previous table on the id (unique). 
+- Description: We store the relations between different counters and the service they provide (represented by an integer that is the serviceId). The name of the service could be found by querying the 'services' table on the id (unique). 
   ```
-    CREATE TABLE "servicesPerOffice" (
-	"officeId"	INTEGER NOT NULL,
+   CREATE TABLE "servicesPerCounter" (
+	"counterId"	INTEGER NOT NULL,
 	"serviceId"	INTEGER NOT NULL,
-	PRIMARY KEY("officeId","serviceId")
-    );
+	FOREIGN KEY("serviceId") REFERENCES "services"("id") ON DELETE CASCADE,
+	PRIMARY KEY("counterId","serviceId")
+	);
   ```
 - Table `served` 
-- Fields: id-officeId-serviceId-officier-date
+- Fields: id-officeId-serviceId-officer-date
 - Description: We are storing each served user with an autoincrement id, storing also the office who served him, the type of service selected, the person working in the office at that time and the date that could be useful for statistics, even if not meant to be realised (I chose not to save the ticket number, it seemed useless to me).
   ```
     CREATE TABLE "served" (
 	"id"	INTEGER NOT NULL UNIQUE,
-	"officeId"	INTEGER NOT NULL,
+	"counterId"	INTEGER NOT NULL,
 	"serviceId"	INTEGER NOT NULL,
-	"officier"	INTEGER NOT NULL,
+	"officer"	INTEGER NOT NULL,
 	"date"	TEXT NOT NULL,
-	FOREIGN KEY("officeId") REFERENCES "servicesPerOffice"("officeId"),
-	FOREIGN KEY("officier") REFERENCES "users"("id") ON DELETE CASCADE,
-	FOREIGN KEY("serviceId") REFERENCES "servicesPerOffice"("serviceId"),
+	FOREIGN KEY("counterId") REFERENCES "servicesPerCounter"("counterId") ON DELETE CASCADE,
+	FOREIGN KEY("officer") REFERENCES "users"("id") ON DELETE CASCADE,
+	FOREIGN KEY("serviceId") REFERENCES "servicesPerCounter"("serviceId") ON DELETE CASCADE,
 	PRIMARY KEY("id" AUTOINCREMENT)
-    );
+	);
   ```
 
 ## API Server
