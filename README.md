@@ -55,3 +55,18 @@ All of the fields of the tables are reported exactly as they have been defined u
   ```
 
 ## API Server
+
+- POST /ticket
+  Request body: ServiceName
+  Response body: TicketNumber
+
+- POST /nextCustomer
+  Request body: counterID
+  Response body: TicketNumber
+
+- GET /callCustomer
+  Response body: TicketNumber, counterID
+
+- GET /estimatedTime/:serviceName
+  Request parameter: ServiceName
+  Response body: EstimatedTime
