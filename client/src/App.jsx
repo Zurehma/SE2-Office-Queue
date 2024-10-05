@@ -9,7 +9,11 @@ function App() {
 
   return (
     <>
+<<<<<<< HEAD
       <div>Prova 2</div>
+=======
+      <div>Prova</div>
+>>>>>>> backend
       <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
