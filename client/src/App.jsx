@@ -11,6 +11,7 @@ function App() {
     <>
       <div>Prova 2</div>
       <div>Prova</div>
+      <div>Prova 3</div>
       <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
