@@ -3,7 +3,7 @@
 ## Database Tables
 All of the fields of the tables are reported exactly as they have been defined using SQLlite. Pay attention to low or capital letters, everything should be consistent with respect to what it's written here.
 - Table `users` 
-- Fields: id-name-surname-role
+- Fields: id-name-surname-role-username-password
 - Description: each user is uniquely identified through an id (autoincremental). Moreover, name, surname and role are stored in the database. Role is a string of text between admin and officier.
   ```
     CREATE TABLE "users" (
@@ -11,8 +11,10 @@ All of the fields of the tables are reported exactly as they have been defined u
 	"name"	TEXT NOT NULL,
 	"surname"	TEXT NOT NULL,
 	"role"	TEXT NOT NULL,
+	"username"	TEXT NOT NULL,
+	"password"	TEXT NOT NULL,
 	PRIMARY KEY("id" AUTOINCREMENT)
-    );
+	);
   ```
 - Table `services` 
 - Fields: id-name-averageTime
