@@ -22,6 +22,65 @@ function AuthRoutes(app) {
   this.getRouter = () => this.router;
 
   this.initRoutes = () => {};
+  
+  const userDAO = new UserDAO();
+
+  //Passport configuration
+  passport.use(new LocalStrategy(async function verify(username,password,callback){
+    const user = await userDao.getUserByCredentials(username,password);
+    if(!user){
+      return callback(null,false,{message:'Invalid username or password'});
+    }
+    return callback(null,user);
+  }))
+
+
+  passport.serializeUser(function(user,callback){
+    callback(null,user);
+  })
+
+  passport.deserializeUser(function(user,callback){
+    callback(null,user);
+  })
+
+  app.use(session({
+    secret: "This is a very secret information used to initialize the session!",
+    resave: false,
+    saveUninitialized: false,
+  }));
+  app.use(passport.authenticate('session'));
+
+  this.initRoutes = () => {
+
+    //Register a user
+    this.router.post(
+      "/register",
+      async (req, res) => {
+        try {
+          const { name, surname, role, username, password } = req.body;
+          await userDAO.createUser(name, surname, role, username, password);
+          res.status(200).json({ message: "User created successfully" });
+        } catch (error) {
+          res.status(500).json({ error: error.message });
+        }
+      }
+    );
+
+    //Login
+    this.router.post(
+      "/login",
+      passport.authenticate('local'),
+      (req, res) => {
+        res.status(200).json({ message: "Login successful" });
+      }
+    );
+
+
+
+  };
+
+
+
 }
 
 export default AuthRoutes;
