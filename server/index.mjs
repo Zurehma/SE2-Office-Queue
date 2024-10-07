@@ -8,11 +8,8 @@ import Utility from "./utilities.mjs";
 import AuthRoutes from "./routes/authRoutes.mjs";
 import ServiceRoutes from "./routes/serviceRoutes.mjs";
 
-<<<<<<< HEAD
-=======
 import bodyParser from 'body-parser';
 
->>>>>>> ZR/development
 const app = new express();
 const port = 3001;
 const baseURL = "/api";
@@ -36,9 +33,6 @@ serviceRoutes.initRoutes();
 app.use(baseURL + "/sessions", authRoutes.getRouter());
 app.use(baseURL + "/service", serviceRoutes.getRouter());
 app.use(Utility.errorHandler);
-<<<<<<< HEAD
-=======
 app.use(bodyParser.json());
->>>>>>> ZR/development
 
 app.listen(port, () => console.log(`Server listening at http://localhost:${port}`));

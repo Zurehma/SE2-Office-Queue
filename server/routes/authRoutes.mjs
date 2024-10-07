@@ -20,8 +20,6 @@ function AuthRoutes(app) {
   this.app = app;
 
   this.getRouter = () => this.router;
-
-  this.initRoutes = () => {};
   
   const userDAO = new UserDAO();
 
