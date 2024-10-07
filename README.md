@@ -58,9 +58,10 @@ All of the fields of the tables are reported exactly as they have been defined u
 
 ## API Server
 
-- POST /ticket
-  Request body: ServiceName
-  Response body: TicketNumber
+- POST api/service/ticket   
+  Request body: service  (One of: "Public Service", "Money Transfer", "Shipping and Receiving")  
+  Response body: ticket  (String returned as XXY where XX is 2 characters identifying the service and Y is an integer)
+  
 
 - POST /nextCustomer
   Request body: counterID
