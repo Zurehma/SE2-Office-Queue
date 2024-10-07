@@ -1,1 +1,14 @@
-//http file to test the format of the API requests
+// http file to test the format of the API requests
+
+### Create a new user
+POST http://localhost:3001/api/sessions/register
+Content-Type: application/json
+
+{
+    "name":"Zurehma",
+    "surname":"Rameez",
+    "role":"admin",
+    "username":"zurehma",
+    "password":"123456"
+
+}
