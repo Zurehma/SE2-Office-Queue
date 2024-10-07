@@ -73,3 +73,14 @@ All of the fields of the tables are reported exactly as they have been defined u
 - GET /estimatedTime/:serviceName
   Request parameter: ServiceName
   Response body: EstimatedTime
+
+
+## Usernames and Passwords
+- Username: admin   
+Password: admin@123
+
+- Username: manager1  
+Password: manager@123
+
+- Username: manager2  
+Password: manager@123
