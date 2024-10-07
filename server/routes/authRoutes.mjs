@@ -25,7 +25,7 @@ function AuthRoutes(app) {
 
   //Passport configuration
   passport.use(new LocalStrategy(async function verify(username,password,callback){
-    const user = await userDao.getUserByCredentials(username,password);
+    const user = await userDAO.getUserByCredentials(username,password);
     if(!user){
       return callback(null,false,{message:'Invalid username or password'});
     }
