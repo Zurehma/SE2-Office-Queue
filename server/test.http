@@ -12,3 +12,18 @@ Content-Type: application/json
     "password":"123456"
 
 }
+
+### Login
+POST http://localhost:3001/api/sessions/login
+Content-Type: application/json
+
+{
+    "username":"zurehma",
+    "password":"123456"
+}   
+
+### Check current user
+GET http://localhost:3001/api/sessions/current
+
+### Logout
+DELETE http://localhost:3001/api/sessions/logout
