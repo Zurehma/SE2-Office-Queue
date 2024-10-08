@@ -1,1 +1,9 @@
 // http file to test the format of the API requests
+
+###
+POST http://localhost:3001/api/service/ticket/dequeue HTTP/1.1
+Content-Type: application/json
+
+{
+    "counterId": 1,
+}
