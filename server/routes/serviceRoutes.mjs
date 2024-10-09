@@ -22,13 +22,17 @@ function ServiceRoutes() {
   this.getRouter = () => this.router;
 
   this.initRoutes = () => {
+    /**
+     * Route to call the next customer in the queue of one of the services provided by the counterID provided in the body of the request
+     */
     this.router.post(
-      "/ticket/dequeue",
-      body("counterId").isString().notEmpty(),
+      "/ticket/next",
+      body("counterID").isString().notEmpty(),
       Utility.validateRequest,
+      Utility.isLoggedIn,
       async (req, res, next) => {
         try {
-          const services = await this.serviceDAO.getServicesPerCounter(req.counterId);
+          const services = await this.serviceDAO.getServicesPerCounter(req.counterID);
           const maxQueueLength = Math.max(
             ...[...services].map((service) => this.queueManager[service.code].length())
           );
@@ -42,7 +46,7 @@ function ServiceRoutes() {
             throw err;
           }
 
-          return res.status(200).json({ serviceCode: service.code, ticket: ticket, counterId: counterId });
+          return res.status(200).json({ serviceCode: service.code, ticket: ticket, counterID: counterID });
         } catch (err) {
           return next(err);
         }
@@ -50,35 +54,35 @@ function ServiceRoutes() {
     );
 
     //Route for user to get new ticket
-    this.router.post("/ticket",
-      [check("service").isString().notEmpty(),
-      Utility.validateRequest],
-      async(req,res)=>{
+    this.router.post(
+      "/ticket",
+      [check("service").isString().notEmpty(), Utility.validateRequest],
+      async (req, res) => {
         const service = req.body.service.toLowerCase();
         let ticket = "";
-        if (service === "public service"){
-          ticket = "PS" + (ps_queue.length()+1);
+        if (service === "public service") {
+          ticket = "PS" + (ps_queue.length() + 1);
           ps_queue.enqueue(ticket);
-        } else if (service === "money transfer"){
-          ticket = "MT" + (mt_queue.length()+1);
+        } else if (service === "money transfer") {
+          ticket = "MT" + (mt_queue.length() + 1);
           mt_queue.enqueue(ticket);
-        } else if (service === "shipping and receiving"){
-          ticket = "SR" + (sr_queue.length()+1);
+        } else if (service === "shipping and receiving") {
+          ticket = "SR" + (sr_queue.length() + 1);
           sr_queue.enqueue(ticket);
         } else {
-          return res.status(400).json({message: "Invalid service"});
+          return res.status(400).json({ message: "Invalid service" });
         }
-        return res.status(200).json({ticket: ticket});
-      })
-  
-      //Route for manager or admin to clear queues
-      this.router.delete("/resetQueues", Utility.isLoggedIn, async(req,res)=>{
-        ps_queue.clear();
-        mt_queue.clear();
-        sr_queue.clear();
-        return res.status(200).json({message: "Queues cleared"});
-      });
-    
+        return res.status(200).json({ ticket: ticket });
+      }
+    );
+
+    //Route for manager or admin to clear queues
+    this.router.delete("/resetQueues", Utility.isLoggedIn, async (req, res) => {
+      ps_queue.clear();
+      mt_queue.clear();
+      sr_queue.clear();
+      return res.status(200).json({ message: "Queues cleared" });
+    });
   };
 }
 

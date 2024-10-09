@@ -3,21 +3,18 @@
 import express from "express";
 import morgan from "morgan";
 import cors from "cors";
+import bodyParser from "body-parser";
 
 import Utility from "./utilities.mjs";
 import AuthRoutes from "./routes/authRoutes.mjs";
 import ServiceRoutes from "./routes/serviceRoutes.mjs";
 
-<<<<<<< HEAD
-import bodyParser from 'body-parser';
-
-=======
->>>>>>> LP/development
 const app = new express();
 const port = 3001;
 const baseURL = "/api";
 
 app.use(morgan("dev"));
+app.use(bodyParser.json());
 app.use(express.json({ limit: "25mb" }));
 app.use(
   cors({
@@ -36,9 +33,5 @@ serviceRoutes.initRoutes();
 app.use(baseURL + "/sessions", authRoutes.getRouter());
 app.use(baseURL + "/service", serviceRoutes.getRouter());
 app.use(Utility.errorHandler);
-<<<<<<< HEAD
-app.use(bodyParser.json());
-=======
->>>>>>> LP/development
 
 app.listen(port, () => console.log(`Server listening at http://localhost:${port}`));

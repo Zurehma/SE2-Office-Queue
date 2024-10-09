@@ -1,34 +1,3 @@
-<<<<<<< HEAD
-
-class Queue {
-  constructor() {
-    this.queue = [];
-  }
-
-  enqueue(ticket) {
-    this.queue.push(ticket);
-  }
-
-  dequeue() {
-    return this.queue.shift();
-  }
-
-  length() {
-    return this.queue.length;
-  }
-
-  isEmpty() {
-    return this.queue.length === 0;
-  }
-
-  clear() {
-    this.queue = [];
-  }
-
-}
-
-export default Queue;
-=======
 // Queue manager module
 
 import ServiceDAO from "../dao/serviceDAO.mjs";
@@ -127,4 +96,3 @@ function QueueManager() {
 }
 
 export default QueueManager;
->>>>>>> LP/development
