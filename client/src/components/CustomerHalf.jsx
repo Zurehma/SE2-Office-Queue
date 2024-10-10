@@ -19,8 +19,6 @@ const CustomerHalf = () => {
   );
 }
 
-
-
 const CustomerHalfContainer = () => {
   const [ticketNumber, setTicketNumber] = useState('');
   const [estimatedTime, setEstimatedTime] = useState('');
@@ -44,10 +42,10 @@ const CustomerHalfContainer = () => {
 
         const data = await response.json();
 
-        setTicketNumber(data.ticketNumber);
-        setEstimatedTime(data.estimatedTime);
+        setTicketNumber(data.ticketNumber || ''); // Ensure ticketNumber is never undefined
+        setEstimatedTime(data.estimatedTime || ''); 
       } catch (error) {
-        console.error('Error fetching ticket data:', error);
+        console.log('Error fetching ticket data:', error);
         setError('Failed to fetch ticket data');
       } finally {
         setLoading(false); 
@@ -64,7 +62,6 @@ const CustomerHalfContainer = () => {
   if (error) {
     return <div style={{ color: 'red' }}>{error}</div>; 
   }
-  
 
   return (
     <div className="container vh-100 d-flex align-items-center justify-content-center">
@@ -72,7 +69,7 @@ const CustomerHalfContainer = () => {
         <div className="col-md-6 d-flex flex-column justify-content-center align-items-center">
           <div className="info-container text-center">
             <h2 style={{ color: 'white', fontWeight: 'bold', fontSize: '3rem' }}>
-              Your Ticket: {ticketNumber}
+              Your Ticket: {ticketNumber || 'N/A'}
             </h2>
             <p
               className={estimatedTime > 15 ? 'text-danger' : 'text-white'}
@@ -80,9 +77,13 @@ const CustomerHalfContainer = () => {
             >
               Estimated waiting time: {estimatedTime} minutes
             </p>
-            <div className="qr-code-container">
-              <QRCode value={ticketNumber} />
-            </div>
+            {ticketNumber ? (
+              <div className="qr-code-container">
+                <QRCode value={ticketNumber} />
+              </div>
+            ) : (
+              <p style={{ color: 'red' }}>No ticket available to generate QR code.</p>
+            )}
           </div>
         </div>
       </div>
