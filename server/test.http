@@ -44,5 +44,13 @@ Content-Type: application/json
     "service":"MONEY TRANSFER"
 }
 
+### Get a ticket
+POST http://localhost:3001/api/service/ticket
+Content-Type: application/json
+
+{
+    "service":"public service"
+}
+
 ### Clear queues
 DELETE http://localhost:3001/api/service/resetQueues

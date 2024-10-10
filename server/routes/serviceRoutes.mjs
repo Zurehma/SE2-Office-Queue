@@ -54,35 +54,25 @@ function ServiceRoutes() {
     );
 
     //Route for user to get new ticket
-    this.router.post(
-      "/ticket",
-      [check("service").isString().notEmpty(), Utility.validateRequest],
-      async (req, res) => {
+    this.router.post("/ticket",
+      [check("service").isString().notEmpty(),
+      Utility.validateRequest],
+      async(req,res)=>{
         const service = req.body.service.toLowerCase();
-        let ticket = "";
-        if (service === "public service") {
-          ticket = "PS" + (ps_queue.length() + 1);
-          ps_queue.enqueue(ticket);
-        } else if (service === "money transfer") {
-          ticket = "MT" + (mt_queue.length() + 1);
-          mt_queue.enqueue(ticket);
-        } else if (service === "shipping and receiving") {
-          ticket = "SR" + (sr_queue.length() + 1);
-          sr_queue.enqueue(ticket);
-        } else {
-          return res.status(400).json({ message: "Invalid service" });
+        const serviceCode = await this.serviceDAO.getServiceCode(service);
+        if (serviceCode === undefined){
+          return res.status(400).json({message: "Invalid service"});
         }
-        return res.status(200).json({ ticket: ticket });
-      }
-    );
-
+        const ticket = this.queueManager.enqueue(serviceCode);
+        return res.status(200).json({ticket: ticket});
+      })
+  
     //Route for manager or admin to clear queues
-    this.router.delete("/resetQueues", Utility.isLoggedIn, async (req, res) => {
-      ps_queue.clear();
-      mt_queue.clear();
-      sr_queue.clear();
-      return res.status(200).json({ message: "Queues cleared" });
+    this.router.delete("/resetQueues", Utility.isLoggedIn, async(req,res)=>{
+       this.queueManager.reset();
+      return res.status(200).json({message: "Queues cleared"});
     });
+    
   };
 }
 

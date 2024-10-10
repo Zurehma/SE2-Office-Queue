@@ -14,7 +14,6 @@ function QueueManager() {
    */
   this.init = async () => {
     let services = await this.serviceDAO.getServices();
-
     services.forEach((service) => (this.queues[service.code] = { service: service, queue: [] }));
   };
 
@@ -26,7 +25,7 @@ function QueueManager() {
    * - The ticket value that has added to the queue
    */
   this.enqueue = (serviceCode) => {
-    console.log(serviceCode, this.queues);
+    //console.log(serviceCode, this.queues);
     if (!this.queues.hasOwnProperty(serviceCode)) return undefined;
 
     const ticket = serviceCode + (this.queues[serviceCode].queue.length + 1);
@@ -91,7 +90,11 @@ function QueueManager() {
    * Reset the queue manager
    */
   this.reset = () => {
-    this.queues = {};
+    for (let serviceCode in this.queues) {
+      if (this.queues.hasOwnProperty(serviceCode)) {
+        this.queues[serviceCode].queue = [];
+      }
+    }
   };
 }
 
