@@ -8,11 +8,11 @@ import { Container, Alert } from 'react-bootstrap';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 
+import API from '../Api';
 import {Home} from './components/Home';
 import { NavigationBar } from './components/Navbar';
 import {LoginForm} from './components/Auth';
 import CustomerHalf from './components/CustomerHalf';
-import backgroundImage from './assets/backgroundCustomer.jpg'; 
 
 function App() {
   const [error, setError] = useState(null);
@@ -49,7 +49,7 @@ function App() {
         </Alert>
         )}
         <Routes>
-          <Route path="/" element={<Home/>} />
+          <Route path="/" element={<Home />} />
           <Route path="/login" element={ 
               loggedIn ? <Navigate replace to='/' /> : <LoginForm login={handleLogin}/>}/>
         </Routes>

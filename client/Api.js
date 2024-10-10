@@ -65,5 +65,11 @@ function handleInvalidResponse(response) {
   return response;
 }
 
+const API = {
+  getTicket,
+  logIn,
+  getUserInfo,
+  logOut
+};
 
-export default getTicket;
+export default API;

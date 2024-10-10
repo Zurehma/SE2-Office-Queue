@@ -1,7 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import QRCode from 'react-qr-code';
+import backgroundImage from '../assets/backgroundCustomer.jpg'; 
 
 const CustomerHalf = () => {
+  return (
+    <>
+      <img src={backgroundImage} alt="Background Image" style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100%',
+        height: '100vh',
+        objectFit: 'cover',
+        zIndex: -1
+      }} />
+      <CustomerHalfContainer />
+    </>
+  );
+}
+
+
+
+const CustomerHalfContainer = () => {
   const [ticketNumber, setTicketNumber] = useState('');
   const [estimatedTime, setEstimatedTime] = useState('');
   const [loading, setLoading] = useState(true);
