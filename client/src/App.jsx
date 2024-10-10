@@ -24,8 +24,11 @@ function App() {
    * This function handles the login process.
    */
   const handleLogin = async (credentials) => {
-    const user = await API.logIn(credentials);
-    setUser(user); setLoggedIn(true);
+    await API.logIn(credentials);
+    API.getUserInfo().then((user) => {
+      setUser(user);
+      setLoggedIn(true);
+    }).catch((err) => setError(err));
   };
 
   /**

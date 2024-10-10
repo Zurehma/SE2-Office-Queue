@@ -1,3 +1,27 @@
 .custom-navbar {
     background-color: #030303; 
 }
+
+.my-arrow-dropdown::after {
+    color: white !important; 
+  }
+
+.text-danger:focus, .text-danger:active {
+    color: red !important; /* Mantieni il colore rosso anche al click */
+    background-color: transparent !important; /* Evita il cambiamento di colore di sfondo */
+    outline: none !important; /* Rimuovi eventuali bordi evidenziati */
+    box-shadow: none !important; /* Rimuovi eventuali effetti di ombreggiatura */
+}
+
+.btn-black {
+    background-color: black !important; /* Imposta il colore di sfondo a nero */
+    color: white !important; /* Colore del testo bianco per il contrasto */
+    border: none; /* Rimuove eventuali bordi */
+  }
+  
+.btn-black:hover {
+    background-color: #333 !important; /* Colore leggermente più chiaro al passaggio del mouse */
+}
+  
+  
+  

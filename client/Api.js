@@ -28,19 +28,19 @@ const getTicket = async () => {
  * It executes the log-in.
  */
 const logIn = async (credentials) => {
-  return await fetch(SERVER_URL + '/sessions', {
+  console.log(credentials)
+  return await fetch(SERVER_URL + '/api/sessions/login', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
       },
       credentials: 'include',  // this parameter specifies that authentication cookie must be forwared. It is included in all the authenticated APIs.
       body: JSON.stringify(credentials),
-  }).then(handleInvalidResponse)
-  .then(response => response.json());
+  }).then(handleInvalidResponse);
 };
 
 const getUserInfo = async () => {
-  return await fetch(SERVER_URL + '/sessions/current', {
+  return await fetch(SERVER_URL + '/api/sessions/current', {
       credentials: 'include'
   }).then(handleInvalidResponse)
   .then(response => response.json());
@@ -50,7 +50,7 @@ const getUserInfo = async () => {
 * This function destroy the current user's session (executing the log-out).
 */
 const logOut = async() => {
-  return await fetch(SERVER_URL + '/sessions/current', {
+  return await fetch(SERVER_URL + '/api/sessions/logout', {
     method: 'DELETE',
     credentials: 'include'
   }).then(handleInvalidResponse);
