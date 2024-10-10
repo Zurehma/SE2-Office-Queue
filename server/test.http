@@ -5,11 +5,11 @@ POST http://localhost:3001/api/sessions/register
 Content-Type: application/json
 
 {
-    "name":"Awesome",
-    "surname":"Admin",
-    "role":"admin",
-    "username":"admin",
-    "password":"admin@123"
+    "name":"Magnificent",
+    "surname":"Manager",
+    "role":"manager",
+    "username":"manager2",
+    "password":"manager@123"
 
 }
 
@@ -42,6 +42,14 @@ Content-Type: application/json
 
 {
     "service":"MONEY TRANSFER"
+}
+
+### Get a ticket
+POST http://localhost:3001/api/service/ticket
+Content-Type: application/json
+
+{
+    "service":"public service"
 }
 
 ### Clear queues
