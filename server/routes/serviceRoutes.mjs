@@ -63,11 +63,11 @@ function ServiceRoutes() {
         return res.status(200).json({ticket: ticket});
       })
   
-      //Route for manager or admin to clear queues
-      this.router.delete("/resetQueues", Utility.isLoggedIn, async(req,res)=>{
-        this.queueManager.reset();
-        return res.status(200).json({message: "Queues cleared"});
-      });
+    //Route for manager or admin to clear queues
+    this.router.delete("/resetQueues", Utility.isLoggedIn, async(req,res)=>{
+       this.queueManager.reset();
+      return res.status(200).json({message: "Queues cleared"});
+    });
     
   };
 }
