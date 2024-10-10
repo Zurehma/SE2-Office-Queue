@@ -50,9 +50,23 @@ const getServicesPerCounter = (counterID) => {
   });
 };
 
+const getServiceCode = (serviceName) =>{
+  return new Promise((resolve, reject) => {
+    const query = "SELECT code FROM services WHERE LOWER(name) = ?";
+    db.get(query, [serviceName], (err, row) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(row.code);
+      }
+    });
+  });
+}
+
 function ServiceDAO() {
   this.getServices = getServices;
   this.getServicesPerCounter = getServicesPerCounter;
+  this.getServiceCode = getServiceCode;
 }
 
 export default ServiceDAO;
