@@ -9,7 +9,7 @@ import Service from "../models/service.mjs";
  * @returns
  */
 const mapRowsToService = (rows) => {
-  return rows.map((row) => new Service(row.name, row.code, row.averageTime));
+  return rows.map((row) => new Service(row.id, row.name, row.code, row.averageTime));
 };
 
 /**
@@ -31,14 +31,14 @@ const getServices = () => {
 };
 
 /**
- * 
- * @param {*} counterID 
- * @returns 
+ *
+ * @param {*} counterID
+ * @returns
  */
 const getServicesPerCounter = (counterID) => {
   return new Promise((resolve, reject) => {
     const query =
-      "SELECT name, averageTime, code FROM services s, servicesPerCounter sc WHERE s.serviceId == sc.serviceId AND sc.counterId = ?";
+      "SELECT s.id, name, averageTime, code FROM services s, servicesPerCounter sc WHERE s.id == sc.serviceId AND sc.counterId = ?";
 
     db.all(query, [counterID], (err, rows) => {
       if (err) {
@@ -50,7 +50,21 @@ const getServicesPerCounter = (counterID) => {
   });
 };
 
-const getServiceCode = (serviceName) =>{
+const addServedCustomer = (counterID, serviceID, officer, date) => {
+  return new Promise((resolve, reject) => {
+    const query = "INSERT INTO served (counterId, serviceId, officer, date) VALUES (?, ?, ?, ?)";
+
+    db.run(query, [counterID, serviceID, officer, date], function (err) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(this.changes);
+      }
+    });
+  });
+};
+
+const getServiceCode = (serviceName) => {
   return new Promise((resolve, reject) => {
     const query = "SELECT code FROM services WHERE LOWER(name) = ?";
     db.get(query, [serviceName], (err, row) => {
@@ -61,11 +75,12 @@ const getServiceCode = (serviceName) =>{
       }
     });
   });
-}
+};
 
 function ServiceDAO() {
   this.getServices = getServices;
   this.getServicesPerCounter = getServicesPerCounter;
+  this.addServedCustomer = addServedCustomer;
   this.getServiceCode = getServiceCode;
 }
 
