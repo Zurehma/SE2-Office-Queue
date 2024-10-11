@@ -22,6 +22,7 @@ function ServiceRoutes() {
   this.getRouter = () => this.router;
 
   this.initRoutes = () => {
+
     /**
      * Route to call the next customer in the queue of one of the services provided by the counterID provided in the body of the request
      */
@@ -58,10 +59,12 @@ function ServiceRoutes() {
       }
     );
 
-    //Route for user to get new ticket
+    /* 
+      Route for user to get new ticket
+    */
     this.router.post(
       "/ticket",
-      [check("service").isString().notEmpty(), Utility.validateRequest],
+      [body("service").isString().notEmpty(), Utility.validateRequest],
       async (req, res) => {
         const service = req.body.service.toLowerCase();
         const serviceCode = await this.serviceDAO.getServiceCode(service);
