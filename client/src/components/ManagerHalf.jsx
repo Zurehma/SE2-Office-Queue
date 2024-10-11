@@ -44,7 +44,6 @@ const ManagerHalfContainer = () => {
     const resultMessage = await resetQueues();
     setMessage(resultMessage);
 
-    // Clear the message after 5 seconds (5000 milliseconds)
     setTimeout(() => {
       setMessage('');
     }, 5000);
@@ -56,14 +55,12 @@ const ManagerHalfContainer = () => {
 
       <h3>Manage Queues</h3>
 
-      {/* Display message after reset */}
       {message && (
         <p style={{ marginTop: '20px', fontSize: '18px' }}>
           {message}
         </p>
       )}
 
-      {/* Add a container for the button with absolute positioning */}
       <div style={{
         position: 'absolute',
         bottom: 0,
