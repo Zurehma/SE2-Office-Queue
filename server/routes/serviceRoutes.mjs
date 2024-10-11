@@ -65,14 +65,49 @@ function ServiceRoutes() {
     this.router.post(
       "/ticket",
       [body("service").isString().notEmpty(), Utility.validateRequest],
-      async (req, res) => {
-        const service = req.body.service.toLowerCase();
-        const serviceCode = await this.serviceDAO.getServiceCode(service);
-        if (serviceCode === undefined) {
-          return res.status(400).json({ message: "Invalid service" });
+      async (req, res,next) => {
+        try {
+          const serviceName = req.body.service.toLowerCase();
+          const serviceDetails = await this.serviceDAO.getServiceDetails(serviceName);
+
+          if (serviceDetails === undefined) {
+            const err = { errCode: 400, errMessage: "Service not found" };
+            throw err;
+          }
+
+          const serviceCode = serviceDetails.code;
+          const averageTime = serviceDetails.averageTime;
+          const queueLength = this.queueManager.length(serviceCode);
+          const ticket = this.queueManager.enqueue(serviceCode);
+
+          const servicesAllCounters = await this.serviceDAO.getServicesForAllCounters();
+          const counterServicesMapped = {};
+          servicesAllCounters.forEach((service) => {
+            const { counterId, serviceId } = service;
+            if (counterServicesMapped[counterId] === undefined) {
+              counterServicesMapped[counterId] = [];
+            }
+            counterServicesMapped[counterId].push(serviceId);
+          });
+          
+          let sum = 0;
+          Object.keys(counterServicesMapped).forEach((counterId) => {
+            const services = counterServicesMapped[counterId];
+            const canServe = services.includes(serviceDetails.id);
+            if (canServe){
+              const k_i = services.length;
+              sum += 1 / k_i;
+            }
+          });
+
+          const estimatedWaitTime = averageTime * ((queueLength/sum)+(1/2)) ;
+          
+          return res.status(200).json({ ticket: ticket, estimatedWaitTime: estimatedWaitTime });
         }
-        const ticket = this.queueManager.enqueue(serviceCode);
-        return res.status(200).json({ ticket: ticket });
+        catch (err) {
+          return next(err);
+        }
+
       }
     );
 
