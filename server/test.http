@@ -52,5 +52,14 @@ Content-Type: application/json
     "service":"public service"
 }
 
+### Call next customer
+POST http://localhost:3001/api/service/ticket/next HTTP/1.1
+Content-Type: application/json
+
+{
+    "counterID": 1,
+    "date": "2024-03-19"
+}
+
 ### Clear queues
 DELETE http://localhost:3001/api/service/resetQueues

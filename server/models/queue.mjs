@@ -25,7 +25,6 @@ function QueueManager() {
    * - The ticket value that has added to the queue
    */
   this.enqueue = (serviceCode) => {
-    //console.log(serviceCode, this.queues);
     if (!this.queues.hasOwnProperty(serviceCode)) return undefined;
 
     const ticket = serviceCode + (this.queues[serviceCode].queue.length + 1);
