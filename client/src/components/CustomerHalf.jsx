@@ -1,29 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import QRCode from 'react-qr-code';
 import backgroundImage from '../assets/backgroundCustomer.jpg'; 
+import '../styles.css'
 
-const CustomerHalf = () => {
+const CustomerHalf = (props) => {
   return (
     <>
-      <img src={backgroundImage} alt="Background Image" style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100vh',
-        objectFit: 'cover',
-        zIndex: -1
-      }} />
-      <CustomerHalfContainer />
+      <img
+        src={backgroundImage}
+        alt="Background Image"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100vh',
+          objectFit: 'cover',
+          zIndex: -1
+        }}
+      />
+      <CustomerHalfContainer error={props.error} setError={props.setError} />
     </>
   );
-}
+};
 
-const CustomerHalfContainer = () => {
+const CustomerHalfContainer = (props) => {
   const [ticketNumber, setTicketNumber] = useState('');
   const [estimatedTime, setEstimatedTime] = useState('');
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchTicketData = async () => {
@@ -42,25 +46,25 @@ const CustomerHalfContainer = () => {
 
         const data = await response.json();
 
-        setTicketNumber(data.ticketNumber || ''); // Ensure ticketNumber is never undefined
-        setEstimatedTime(data.estimatedTime || ''); 
+        setTicketNumber(data.ticketNumber || ''); 
+        setEstimatedTime(data.estimatedTime || '');
       } catch (error) {
         console.log('Error fetching ticket data:', error);
-        setError('Failed to fetch ticket data');
+        props.setError('Failed to fetch ticket data');
       } finally {
         setLoading(false); 
       }
     };
 
     fetchTicketData();
-  }, []);
+  }, [props]);
 
   if (loading) {
     return <div style={{ color: 'white' }}>Loading...</div>;
   }
 
-  if (error) {
-    return <div style={{ color: 'red' }}>{error}</div>; 
+  if (props.error) {
+    return <div style={{ color: 'red' }}>{props.error}</div>; 
   }
 
   return (

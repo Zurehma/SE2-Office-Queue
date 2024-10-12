@@ -14,6 +14,8 @@ import { NavigationBar } from './components/Navbar';
 import {LoginForm} from './components/Auth';
 import CustomerHalf from './components/CustomerHalf';
 import ManagerHalf from './components/ManagerHalf';
+import NotFound from './components/NotFound';
+
 
 function App() {
   const [error, setError] = useState(null);
@@ -56,21 +58,12 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={ 
               loggedIn ? <Navigate replace to='/' /> : <LoginForm login={handleLogin}/>}/>
-          <Route path="/customer-service" element={<CustomerHalf/>}/>
-          <Route path="/manager" element={<ManagerHalf/>}/>
+          <Route path="/customer-service" element={<CustomerHalf errror = {error} setError={setError}/>}/>
+          <Route path="/manager" element={<ManagerHalf errror = {error} setError={setError}/>}/>
+          <Route path='*' element={<NotFound/>}/>
         </Routes>
       </Container>
-      
-      {/*<img src={backgroundImage} alt="Background Image" style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100vh',
-        objectFit: 'cover',
-        zIndex: -1
-      }} />
-      <CustomerHalf />*/}
+    
     </div>
   );
 }
