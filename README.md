@@ -33,7 +33,7 @@ All of the fields of the tables are reported exactly as they have been defined u
   );
   ```
 
-- Table `servecesPerCounter`
+- Table `servicesPerCounter`
 - Fields: officeId-serviceId
 - Description: We store the relations between different counters and the service they provide (represented by an integer that is the serviceId). The name of the service could be found by querying the 'services' table on the id (unique).
   ```
@@ -63,22 +63,21 @@ All of the fields of the tables are reported exactly as they have been defined u
 
 ## API Server
 
-- POST api/service/ticket  
-  Request body: service (One of: "Public Service", "Money Transfer", "Shipping and Receiving")  
-  Response body: ticket (String returned as XXY where XX is 2 characters identifying the service and Y is an integer)
-
-- POST /nextCustomer
-  Request body: counterID
-  Response body: TicketNumber
-
-- GET /callCustomer
-  Response body: TicketNumber, counterID
-
-- GET /estimatedTime/:serviceName
-  Request parameter: ServiceName
-  Response body: EstimatedTime
-
 ### Service APIs
+
+#### POST `api/service/ticket`
+
+- Request Paramaters: _None_
+- Request Body: 
+  - `serviceName`: a string that represents the name of the service being requested by the cutomer
+- Response Body: An object with the following paramters:
+  - `ticket`: A string that represents the ticket number assigned to the customer. It is made up of two letters representing the service type and an integer representing the place in the queue.
+  - `estimatedWaitTime`: A number that represents the estimated number of minutes the customer will have to wait for their turn.
+  - Example: `{ "ticket": "PS1", "estimatedWaitTime": 5 }`
+- Access Constraints: _None_
+- Additional Constraints: 
+  - It should return a 400 error id the requested service does not exist
+
 
 #### POST `api/service/ticket/next`
 
@@ -118,6 +117,23 @@ All of the fields of the tables are reported exactly as they have been defined u
   - Example: `[1, ...]`
 - Access Constraints: Can only be called by a logged in user whose role is either Admin or Manager
 - Additional Constraints: _None_
+
+#### DELETE `api/service/resetQueues`
+
+- Request Parameters: _None_
+- Request Body: _None_
+- Response Body: Success Message
+- Access Constraints: Can only be called by a logged in user whose role is either Admin or Manager
+- Additional Constraints: _None_
+
+### User APIs
+
+#### POST `api/sessions/login`
+
+#### DELETE `api/sessions/logout`
+
+#### GET `api/sessions/current`
+
 
 ## Usernames and Passwords
 
