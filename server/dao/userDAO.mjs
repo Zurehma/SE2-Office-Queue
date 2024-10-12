@@ -55,7 +55,7 @@ export default function UserDAO() {
                         if (!crypto.timingSafeEqual(Buffer.from(row.password, 'hex'), hashedPassword))
                             resolve(false);
                         else
-                            resolve(new User(row.userID, row.name, row.surname, row.role, row.username));
+                            resolve(new User(row.id, row.name, row.surname, row.role, row.username));
                     });
                 }
             });

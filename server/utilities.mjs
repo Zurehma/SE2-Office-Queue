@@ -14,6 +14,36 @@ const isLoggedIn = (req, res, next) => {
     return next();
   }
 
+  return res.status(401).json({ error: "Not authenticated", status: 401 });
+};
+
+/**
+ * Middleware to check if a user has logged in and is an admin
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns
+ */
+const isLoggedInAndAdmin = (req, res, next) => {
+  if (req.isAuthenticated() && req.user.role === "admin") {
+    return next();
+  }
+
+  return res.status(401).json({ error: "Not authorized", status: 401 });
+};
+
+/**
+ * Middleware to check if a user has logged in and is a manager
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns
+ */
+const isLoggedInAndManager = (req, res, next) => {
+  if (req.isAuthenticated() && req.user.role === "manager") {
+    return next();
+  }
+
   return res.status(401).json({ error: "Not authorized", status: 401 });
 };
 
@@ -35,8 +65,8 @@ const validateRequest = (req, res, next) => {
 
   errors.array().forEach((error) => {
     errorMessage +=
-      "- Parameter: **" +
-      error.param +
+      "- Value: **" +
+      error.value +
       "** - Reason: **" +
       error.msg +
       "** - Location: **" +
@@ -48,7 +78,7 @@ const validateRequest = (req, res, next) => {
 };
 
 /**
- *
+ *ƒ
  * @param {*} err
  * @param {*} req
  * @param {*} res
@@ -67,6 +97,8 @@ const errorHandler = (err, req, res, next) => {
  */
 const Utility = {
   isLoggedIn,
+  isLoggedInAndManager,
+  isLoggedInAndAdmin,
   validateRequest,
   errorHandler,
 };
