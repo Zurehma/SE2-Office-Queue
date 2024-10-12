@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import backgroundManager from '../assets/backgroundManager.jpg';
 
+// Function to reset the queues
 const resetQueues = async () => {
   try {
     const response = await fetch('http://localhost:3001/api/service/resetQueues', {
       method: 'DELETE',
-      credentials: 'include',  // This includes the session cookie in the request
+      credentials: 'include',
     });
 
     if (!response.ok) {
@@ -18,23 +19,23 @@ const resetQueues = async () => {
   }
 };
 
-// Function to save configuration to the database
-const saveConfiguration = async (configuration) => {
+// Function to save service-to-counter relationships to the database
+const saveServicesForCounters = async (counterServices) => {
   try {
-    const response = await fetch('', {
+    const response = await fetch('http://localhost:3001/api/service/saveCounterServices', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       credentials: 'include',
-      body: JSON.stringify(configuration),
+      body: JSON.stringify(counterServices),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to save configuration');
+      throw new Error('Failed to save counter services');
     }
 
-    return 'Configuration saved successfully!';
+    return 'Counter services saved successfully!';
   } catch (error) {
     return `Error: ${error.message}`;
   }
@@ -63,11 +64,29 @@ const ManagerHalf = () => {
 
 const ManagerHalfContainer = () => {
   const [message, setMessage] = useState('');
-  const [selectedAccounters, setSelectedAccounters] = useState({
-    publicService: 'accounter1',
-    moneyTransfer: 'accounter1',
-    shippingReceiving: 'accounter1',
+  const [counterServices, setCounterServices] = useState({
+    accounter1: [],
+    accounter2: [],
   });
+
+  const services = [
+    { id: 1, name: 'Public Service' },
+    { id: 2, name: 'Money Transfer' },
+    { id: 3, name: 'Shipping and Receiving' },
+  ];
+
+  const handleServiceSelection = (accounter, serviceId) => {
+    setCounterServices((prev) => {
+      const updatedServices = prev[accounter].includes(serviceId)
+        ? prev[accounter].filter((id) => id !== serviceId)
+        : [...prev[accounter], serviceId];
+
+      return {
+        ...prev,
+        [accounter]: updatedServices,
+      };
+    });
+  };
 
   const handleResetClick = async () => {
     const resultMessage = await resetQueues();
@@ -78,15 +97,8 @@ const ManagerHalfContainer = () => {
     }, 5000);
   };
 
-  const handleAccounterChange = (e, service) => {
-    setSelectedAccounters({
-      ...selectedAccounters,
-      [service]: e.target.value,
-    });
-  };
-
   const handleConfigureClick = async () => {
-    const resultMessage = await saveConfiguration(selectedAccounters);
+    const resultMessage = await saveServicesForCounters(counterServices);
     setMessage(resultMessage);
 
     setTimeout(() => {
@@ -98,72 +110,36 @@ const ManagerHalfContainer = () => {
     <div style={{ padding: '20px', color: '#fff' }}>
       <h1>Manager Dashboard</h1>
 
-      <h2>Service Configuration</h2>
+      <h2>Assign Services to Counters</h2>
 
-      {/* Public Service Dropdown */}
+      {/* Accounter 1 */}
       <div style={{ marginBottom: '20px' }}>
-        <label htmlFor="publicServiceSelect" style={{ marginRight: '10px' }}>
-          Public Service:
-        </label>
-        <select
-          id="publicServiceSelect"
-          value={selectedAccounters.publicService}
-          onChange={(e) => handleAccounterChange(e, 'publicService')}
-          style={{
-            padding: '10px',
-            fontSize: '16px',
-            backgroundColor: '#f0f0f0',
-            border: '1px solid #ccc',
-            borderRadius: '5px',
-          }}
-        >
-          <option value="accounter1">Accounter 1</option>
-          <option value="accounter2">Accounter 2</option>
-        </select>
+        <h3>Accounter 1 (ID: 2)</h3>
+        {services.map((service) => (
+          <label key={service.id} style={{ display: 'block', marginBottom: '10px' }}>
+            <input
+              type="checkbox"
+              checked={counterServices.accounter1.includes(service.id)}
+              onChange={() => handleServiceSelection('accounter1', service.id)}
+            />
+            {service.name}
+          </label>
+        ))}
       </div>
 
-      {/* Money Transfer Dropdown */}
+      {/* Accounter 2 */}
       <div style={{ marginBottom: '20px' }}>
-        <label htmlFor="moneyTransferSelect" style={{ marginRight: '10px' }}>
-          Money Transfer:
-        </label>
-        <select
-          id="moneyTransferSelect"
-          value={selectedAccounters.moneyTransfer}
-          onChange={(e) => handleAccounterChange(e, 'moneyTransfer')}
-          style={{
-            padding: '10px',
-            fontSize: '16px',
-            backgroundColor: '#f0f0f0',
-            border: '1px solid #ccc',
-            borderRadius: '5px',
-          }}
-        >
-          <option value="accounter1">Accounter 1</option>
-          <option value="accounter2">Accounter 2</option>
-        </select>
-      </div>
-
-      {/* Shipping and Receiving Dropdown */}
-      <div style={{ marginBottom: '20px' }}>
-        <label htmlFor="shippingReceivingSelect" style={{ marginRight: '10px' }}>
-          Shipping and Receiving:
-        </label>
-        <select
-          id="shippingReceivingSelect"
-          value={selectedAccounters.shippingReceiving}
-          onChange={(e) => handleAccounterChange(e, 'shippingReceiving')}
-          style={{
-            padding: '10px',
-            fontSize: '16px',
-            backgroundColor: '#f0f0f0',
-            border: '1px solid #ccc',
-            borderRadius: '5px',
-          }}
-        >
-          <option value="accounter1">Accounter 1</option>
-          <option value="accounter2">Accounter 2</option>
-        </select>
+        <h3>Accounter 2 (ID: 3)</h3>
+        {services.map((service) => (
+          <label key={service.id} style={{ display: 'block', marginBottom: '10px' }}>
+            <input
+              type="checkbox"
+              checked={counterServices.accounter2.includes(service.id)}
+              onChange={() => handleServiceSelection('accounter2', service.id)}
+            />
+            {service.name}
+          </label>
+        ))}
       </div>
 
       {message && (
@@ -206,7 +182,7 @@ const ManagerHalfContainer = () => {
             borderRadius: '5px'
           }}
         >
-          Configure
+          Save Configuration
         </button>
       </div>
     </div>
