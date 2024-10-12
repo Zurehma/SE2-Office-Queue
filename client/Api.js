@@ -56,6 +56,10 @@ const logOut = async() => {
   }).then(handleInvalidResponse);
 }
 
+
+/**
+ * Utility function to handle invalid responses from the server.
+ */
 function handleInvalidResponse(response) {
   if (!response.ok) { throw Error(response.statusText) }
   let type = response.headers.get('Content-Type');
