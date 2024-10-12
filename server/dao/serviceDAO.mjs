@@ -95,12 +95,42 @@ const getServiceCode = (serviceName) => {
   });
 };
 
+const getServiceDetails = (serviceName) => {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT * FROM services WHERE LOWER(name) = ?";
+    db.get(query, [serviceName], (err, row) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(mapRowsToService([row])[0]);
+      }
+    });
+  });
+}
+
+//for each counter, get the services that are available
+const getServicesForAllCounters = () => {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT * FROM servicesPerCounter";
+    db.all(query, [], (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(rows);
+      }
+    });
+  });
+}
+
+
 function ServiceDAO() {
   this.getServices = getServices;
   this.getCounters = getCounters;
   this.getServicesPerCounter = getServicesPerCounter;
   this.addServedCustomer = addServedCustomer;
   this.getServiceCode = getServiceCode;
+  this.getServiceDetails = getServiceDetails;
+  this.getServicesForAllCounters = getServicesForAllCounters;
 }
 
 export default ServiceDAO;
