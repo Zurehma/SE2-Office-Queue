@@ -22,6 +22,55 @@
 .btn-black:hover {
     background-color: #333 !important; /* Colore leggermente più chiaro al passaggio del mouse */
 }
+
+.service-container {
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+.service-button {
+  border: 2px solid black;
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  width: 150px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-title {
+  font-size: 32px;
+  font-weight: bold; 
+  color: #4a4a4a; 
+  text-transform: uppercase; 
+  margin-top: 40px; 
+  letter-spacing: 2px; 
+  margin-bottom: 50px; 
+  border-bottom: 2px solid black; 
+  display: inline-block; 
+  padding-bottom: 10px; 
+  position: relative; 
+  left: 50%; 
+  transform: translateX(-50%); 
+}
+
+.service-button:hover {
+  background-color: #f0f0f0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.service-icon {
+  font-size: 48px;
+  margin-bottom: 10px;
+}
+
+.service-button p {
+  font-size: 16px;
+  margin: 0;
+}
+
   
   
   

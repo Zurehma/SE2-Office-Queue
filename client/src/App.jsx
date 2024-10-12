@@ -17,8 +17,7 @@ import API from '../Api';
 import {Home} from './components/Home';
 import { NavigationBar } from './components/Navbar';
 import {LoginForm} from './components/Auth';
-import {CustomerHalf} from './components/CustomerHalf';
-import {ManagerHalf} from './components/ManagerHalf';
+
 
 function App() {
   /**
@@ -71,8 +70,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={ 
               loggedIn ? <Navigate replace to='/' /> : <LoginForm login={handleLogin}/>}/>
-          <Route path="/customer-service" element={<CustomerHalf/>}/>
-          <Route path="/manager" element={<ManagerHalf/>}/>
+          
         </Routes>
       </Container>
     </div>
