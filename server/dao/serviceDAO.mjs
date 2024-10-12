@@ -50,6 +50,24 @@ const getServicesPerCounter = (counterID) => {
   });
 };
 
+/**
+ *
+ * @returns
+ */
+const getCounters = () => {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT id FROM users WHERE role == 'manager'";
+
+    db.all(query, [], (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(rows);
+      }
+    });
+  });
+};
+
 const addServedCustomer = (counterID, serviceID, officer, date) => {
   return new Promise((resolve, reject) => {
     const query = "INSERT INTO served (counterId, serviceId, officer, date) VALUES (?, ?, ?, ?)";
@@ -79,6 +97,7 @@ const getServiceCode = (serviceName) => {
 
 function ServiceDAO() {
   this.getServices = getServices;
+  this.getCounters = getCounters;
   this.getServicesPerCounter = getServicesPerCounter;
   this.addServedCustomer = addServedCustomer;
   this.getServiceCode = getServiceCode;

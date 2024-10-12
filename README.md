@@ -1,67 +1,71 @@
 # OfficeQueue_SoftwareEng2
+
 - Document to show the format of the database and of the API designed in the backend of the application.
+
 ## Database Tables
+
 All of the fields of the tables are reported exactly as they have been defined using SQLlite. Pay attention to low or capital letters, everything should be consistent with respect to what it's written here.
-- Table `users` 
+
+- Table `users`
 - Fields: id-name-surname-role-username-password
 - Description: each user is uniquely identified through an id (autoincremental). Moreover, name, surname and role are stored in the database. Role is a string of text between admin and officier.
   ```
     CREATE TABLE "users" (
-	"id"	INTEGER NOT NULL UNIQUE,
-	"name"	TEXT NOT NULL,
-	"surname"	TEXT NOT NULL,
-	"role"	TEXT NOT NULL,
-	"username"	TEXT NOT NULL,
-	"password"	TEXT NOT NULL,
-	PRIMARY KEY("id" AUTOINCREMENT)
-	);
+  "id"	INTEGER NOT NULL UNIQUE,
+  "name"	TEXT NOT NULL,
+  "surname"	TEXT NOT NULL,
+  "role"	TEXT NOT NULL,
+  "username"	TEXT NOT NULL,
+  "password"	TEXT NOT NULL,
+  PRIMARY KEY("id" AUTOINCREMENT)
+  );
   ```
-- Table `services` 
+- Table `services`
 - Fields: id-name-averageTime
 - Description: each service is uniquely identified through a unique id (autoincremental). In addition, the name of the service is stored in the database and also the average time needed to serve it. I kept it separated from the following table to have a general overview of which are the services available in the office without the need of querying a bigger table.
+
   ```
    	CREATE TABLE "services" (
-	"id"	INTEGER NOT NULL UNIQUE,
-	"name"	INTEGER NOT NULL,
-	"averageTime"	INTEGER NOT NULL,
-	PRIMARY KEY("id" AUTOINCREMENT)
-	);
+  "id"	INTEGER NOT NULL UNIQUE,
+  "name"	INTEGER NOT NULL,
+  "averageTime"	INTEGER NOT NULL,
+  PRIMARY KEY("id" AUTOINCREMENT)
+  );
   ```
 
 - Table `servecesPerCounter`
 - Fields: officeId-serviceId
-- Description: We store the relations between different counters and the service they provide (represented by an integer that is the serviceId). The name of the service could be found by querying the 'services' table on the id (unique). 
+- Description: We store the relations between different counters and the service they provide (represented by an integer that is the serviceId). The name of the service could be found by querying the 'services' table on the id (unique).
   ```
    CREATE TABLE "servicesPerCounter" (
-	"counterId"	INTEGER NOT NULL,
-	"serviceId"	INTEGER NOT NULL,
-	FOREIGN KEY("serviceId") REFERENCES "services"("id") ON DELETE CASCADE,
-	PRIMARY KEY("counterId","serviceId")
-	);
+  "counterId"	INTEGER NOT NULL,
+  "serviceId"	INTEGER NOT NULL,
+  FOREIGN KEY("serviceId") REFERENCES "services"("id") ON DELETE CASCADE,
+  PRIMARY KEY("counterId","serviceId")
+  );
   ```
-- Table `served` 
+- Table `served`
 - Fields: id-officeId-serviceId-officer-date
 - Description: We are storing each served user with an autoincrement id, storing also the office who served him, the type of service selected, the person working in the office at that time and the date that could be useful for statistics, even if not meant to be realised (I chose not to save the ticket number, it seemed useless to me).
   ```
     CREATE TABLE "served" (
-	"id"	INTEGER NOT NULL UNIQUE,
-	"counterId"	INTEGER NOT NULL,
-	"serviceId"	INTEGER NOT NULL,
-	"officer"	INTEGER NOT NULL,
-	"date"	TEXT NOT NULL,
-	FOREIGN KEY("counterId") REFERENCES "servicesPerCounter"("counterId") ON DELETE CASCADE,
-	FOREIGN KEY("officer") REFERENCES "users"("id") ON DELETE CASCADE,
-	FOREIGN KEY("serviceId") REFERENCES "servicesPerCounter"("serviceId") ON DELETE CASCADE,
-	PRIMARY KEY("id" AUTOINCREMENT)
-	);
+  "id"	INTEGER NOT NULL UNIQUE,
+  "counterId"	INTEGER NOT NULL,
+  "serviceId"	INTEGER NOT NULL,
+  "officer"	INTEGER NOT NULL,
+  "date"	TEXT NOT NULL,
+  FOREIGN KEY("counterId") REFERENCES "servicesPerCounter"("counterId") ON DELETE CASCADE,
+  FOREIGN KEY("officer") REFERENCES "users"("id") ON DELETE CASCADE,
+  FOREIGN KEY("serviceId") REFERENCES "servicesPerCounter"("serviceId") ON DELETE CASCADE,
+  PRIMARY KEY("id" AUTOINCREMENT)
+  );
   ```
 
 ## API Server
 
-- POST api/service/ticket   
-  Request body: service  (One of: "Public Service", "Money Transfer", "Shipping and Receiving")  
-  Response body: ticket  (String returned as XXY where XX is 2 characters identifying the service and Y is an integer)
-  
+- POST api/service/ticket  
+  Request body: service (One of: "Public Service", "Money Transfer", "Shipping and Receiving")  
+  Response body: ticket (String returned as XXY where XX is 2 characters identifying the service and Y is an integer)
 
 - POST /nextCustomer
   Request body: counterID
@@ -74,13 +78,54 @@ All of the fields of the tables are reported exactly as they have been defined u
   Request parameter: ServiceName
   Response body: EstimatedTime
 
+### Service APIs
+
+#### POST `api/service/ticket/next`
+
+- Request Parameters: _None_
+- Request Body: An object with the following parameters:
+  - `counterID`: an integer that represent the ID of the counter that made the request.
+  - `date`: a string that represent a date. It must be in the format **YYYY-MM-DD**.
+- Response Body: An object with the following parameters:
+  - `serviceCode`: a string that represent the code of the service.
+  - `ticket`: a string that represent the next ticket to serve.
+  - `counterID`: an integer that represent the ID of the counter that made the request.
+  - Example: `{ serviceCode: "PS", ticket: "PS1", counterID: 2 }`
+- Access Constraints: Can only be called by a logged in user whose role is Manager
+- Additional Constraints:
+  - It should return a 400 error if the queues are empty.
+  - It should return a 400 error if the `date` is after the current date.
+  - It should return a 404 error if the `counterID` does not represent a counter account in the database.
+
+#### GET `api/service`
+
+- Request Parameters: _None_
+- Request Body: _None_
+- Response Body: an array of **Service** object with the following parameters:
+  - `id`: an integer that represent the ID of the service.
+  - `name`: a string that represent the name of the service.
+  - `code`: a string that represent the code of the service.
+  - `averageTime`: an integer that represent the average service time (in minute).
+  - Example: `[{ id: 1, name: "Public Service", averageTime: 10, code: "PS" }, ...]`
+- Access Constraints: _None_
+- Additional Constraints: _None_
+
+#### GET `api/service/counters`
+
+- Request Parameters: _None_
+- Request Body: _None_
+- Response Body: An array of integers that represent all the counter's ids.
+  - Example: `[1, ...]`
+- Access Constraints: Can only be called by a logged in user whose role is either Admin or Manager
+- Additional Constraints: _None_
 
 ## Usernames and Passwords
-- Username: admin   
-Password: admin@123
+
+- Username: admin  
+  Password: admin@123
 
 - Username: manager1  
-Password: manager@123
+  Password: manager@123
 
 - Username: manager2  
-Password: manager@123
+  Password: manager@123

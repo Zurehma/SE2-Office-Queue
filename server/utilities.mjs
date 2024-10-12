@@ -97,6 +97,8 @@ const errorHandler = (err, req, res, next) => {
  */
 const Utility = {
   isLoggedIn,
+  isLoggedInAndManager,
+  isLoggedInAndAdmin,
   validateRequest,
   errorHandler,
 };
