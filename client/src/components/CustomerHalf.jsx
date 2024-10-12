@@ -1,66 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import QRCode from 'react-qr-code';
 import backgroundImage from '../assets/backgroundCustomer.jpg'; 
+import '../styles.css'
 
-const CustomerHalf = () => {
+const CustomerHalf = (props) => {
   return (
     <>
-      <img src={backgroundImage} alt="Background Image" style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100vh',
-        objectFit: 'cover',
-        zIndex: -1
-      }} />
-      <CustomerHalfContainer />
+      <img
+        src={backgroundImage}
+        alt="Background Image"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100vh',
+          objectFit: 'cover',
+          zIndex: -1
+        }}
+      />
+      <CustomerHalfContainer error={props.error} setError={props.setError} ticket={15} estimatedTime={30} />
     </>
   );
-}
+};
 
-const CustomerHalfContainer = () => {
-  const [ticketNumber, setTicketNumber] = useState('');
-  const [estimatedTime, setEstimatedTime] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+const CustomerHalfContainer = (props) => {
+  const [ticketNumber, setTicketNumber] = useState(props.ticket);
+  const [estimatedTime, setEstimatedTime] = useState(props.estimatedTime);
+  const [error, setError] = useState(null)
 
-  useEffect(() => {
-    const fetchTicketData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/service/ticket', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ service: 'shipping and RECEIVING' }),
-        });
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const data = await response.json();
-
-        setTicketNumber(data.ticketNumber || ''); // Ensure ticketNumber is never undefined
-        setEstimatedTime(data.estimatedTime || ''); 
-      } catch (error) {
-        console.log('Error fetching ticket data:', error);
-        setError('Failed to fetch ticket data');
-      } finally {
-        setLoading(false); 
-      }
-    };
-
-    fetchTicketData();
-  }, []);
-
-  if (loading) {
-    return <div style={{ color: 'white' }}>Loading...</div>;
-  }
-
-  if (error) {
-    return <div style={{ color: 'red' }}>{error}</div>; 
+  if (props.error) {
+    return <div style={{ color: 'red' }}>{props.error}</div>; 
   }
 
   return (
@@ -71,7 +42,7 @@ const CustomerHalfContainer = () => {
             <h2 style={{ color: 'white', fontWeight: 'bold', fontSize: '3rem' }}>
               Your Ticket: {ticketNumber || 'N/A'}
             </h2>
-            <p
+            <p  
               className={estimatedTime > 15 ? 'text-danger' : 'text-white'}
               style={{ fontWeight: 'bold' }}
             >
