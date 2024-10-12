@@ -2,6 +2,7 @@
 
 import { Router } from "express";
 import { check, body, param, query } from "express-validator";
+import dayjs from "dayjs";
 
 import Utility from "../utilities.mjs";
 
@@ -27,13 +28,24 @@ function ServiceRoutes() {
      */
     this.router.post(
       "/ticket/next",
-      Utility.isLoggedIn,
+      Utility.isLoggedInAndManager,
       body("counterID").isInt({ gt: 0 }),
       body("date").isISO8601({ strict: true }),
       Utility.validateRequest,
       async (req, res, next) => {
         try {
+          if (dayjs().isBefore(req.body.date)) {
+            const err = { errCode: 400, errMessage: "Invalid date!" };
+            throw err;
+          }
+
           const services = await this.serviceDAO.getServicesPerCounter(req.body.counterID);
+
+          if (services.length === 0) {
+            const err = { errCode: 404, errMessage: "The counter does not exist!" };
+            throw err;
+          }
+
           const maxQueueLength = Math.max(
             ...[...services].map((service) => this.queueManager.length(service.code))
           );
@@ -58,23 +70,54 @@ function ServiceRoutes() {
       }
     );
 
+    /**
+     * Route to get the list of services available
+     */
+    this.router.get("", async (req, res, next) => {
+      try {
+        const services = await this.serviceDAO.getServices();
+
+        return res.status(200).json({ services: services });
+      } catch (err) {
+        return next(err);
+      }
+    });
+
+    /**
+     * Route to get the list of counter's id
+     */
+    this.router.get("/counters", Utility.isLoggedIn, async (req, res, next) => {
+      try {
+        const counters = await this.serviceDAO.getCounters();
+
+        return res.status(200).json({ counters: counters });
+      } catch (err) {
+        return next(err);
+      }
+    });
+
     //Route for user to get new ticket
     this.router.post(
       "/ticket",
       [check("service").isString().notEmpty(), Utility.validateRequest],
-      async (req, res) => {
-        const service = req.body.service.toLowerCase();
-        const serviceCode = await this.serviceDAO.getServiceCode(service);
-        if (serviceCode === undefined) {
-          return res.status(400).json({ message: "Invalid service" });
+      async (req, res, next) => {
+        try {
+          const service = req.body.service.toLowerCase();
+          const serviceCode = await this.serviceDAO.getServiceCode(service);
+          if (serviceCode === undefined) {
+            const error = { errCode: 400, errMessage: "Invalid service!" };
+            throw error;
+          }
+          const ticket = this.queueManager.enqueue(serviceCode);
+          return res.status(200).json({ ticket: ticket });
+        } catch (err) {
+          return next(err);
         }
-        const ticket = this.queueManager.enqueue(serviceCode);
-        return res.status(200).json({ ticket: ticket });
       }
     );
 
     //Route for manager or admin to clear queues
-    this.router.delete("/resetQueues", Utility.isLoggedIn, async (req, res) => {
+    this.router.delete("/resetQueues", Utility.isLoggedInAndAdmin, async (req, res) => {
       this.queueManager.reset();
       return res.status(200).json({ message: "Queues cleared" });
     });

@@ -1,16 +1,41 @@
 import React, { useState } from 'react';
 import backgroundManager from '../assets/backgroundManager.jpg';
 
+// Function to reset the queues
 const resetQueues = async () => {
   try {
     const response = await fetch('http://localhost:3001/api/service/resetQueues', {
       method: 'DELETE',
       credentials: 'include',
     });
+
     if (!response.ok) {
       throw new Error('Failed to reset queues');
     }
+
     return 'Queues reset successfully!';
+  } catch (error) {
+    return `Error: ${error.message}`;
+  }
+};
+
+// Function to save service-to-counter relationships to the database
+const saveServicesForCounters = async (counterServices) => {
+  try {
+    const response = await fetch('http://localhost:3001/api/service/saveCounterServices', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(counterServices),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to save counter services');
+    }
+
+    return 'Counter services saved successfully!';
   } catch (error) {
     return `Error: ${error.message}`;
   }
@@ -39,9 +64,41 @@ const ManagerHalf = () => {
 
 const ManagerHalfContainer = () => {
   const [message, setMessage] = useState('');
+  const [counterServices, setCounterServices] = useState({
+    accounter1: [],
+    accounter2: [],
+  });
+
+  const services = [
+    { id: 1, name: 'Public Service' },
+    { id: 2, name: 'Money Transfer' },
+    { id: 3, name: 'Shipping and Receiving' },
+  ];
+
+  const handleServiceSelection = (accounter, serviceId) => {
+    setCounterServices((prev) => {
+      const updatedServices = prev[accounter].includes(serviceId)
+        ? prev[accounter].filter((id) => id !== serviceId)
+        : [...prev[accounter], serviceId];
+
+      return {
+        ...prev,
+        [accounter]: updatedServices,
+      };
+    });
+  };
 
   const handleResetClick = async () => {
     const resultMessage = await resetQueues();
+    setMessage(resultMessage);
+
+    setTimeout(() => {
+      setMessage('');
+    }, 5000);
+  };
+
+  const handleConfigureClick = async () => {
+    const resultMessage = await saveServicesForCounters(counterServices);
     setMessage(resultMessage);
 
     setTimeout(() => {
@@ -53,7 +110,37 @@ const ManagerHalfContainer = () => {
     <div style={{ padding: '20px', color: '#fff' }}>
       <h1>Manager Dashboard</h1>
 
-      <h3>Manage Queues</h3>
+      <h2>Assign Services to Counters</h2>
+
+      {/* Accounter 1 */}
+      <div style={{ marginBottom: '20px' }}>
+        <h3>Accounter 1 (ID: 2)</h3>
+        {services.map((service) => (
+          <label key={service.id} style={{ display: 'block', marginBottom: '10px' }}>
+            <input
+              type="checkbox"
+              checked={counterServices.accounter1.includes(service.id)}
+              onChange={() => handleServiceSelection('accounter1', service.id)}
+            />
+            {service.name}
+          </label>
+        ))}
+      </div>
+
+      {/* Accounter 2 */}
+      <div style={{ marginBottom: '20px' }}>
+        <h3>Accounter 2 (ID: 3)</h3>
+        {services.map((service) => (
+          <label key={service.id} style={{ display: 'block', marginBottom: '10px' }}>
+            <input
+              type="checkbox"
+              checked={counterServices.accounter2.includes(service.id)}
+              onChange={() => handleServiceSelection('accounter2', service.id)}
+            />
+            {service.name}
+          </label>
+        ))}
+      </div>
 
       {message && (
         <p style={{ marginTop: '20px', fontSize: '18px' }}>
@@ -76,10 +163,26 @@ const ManagerHalfContainer = () => {
             backgroundColor: '#007BFF', 
             color: '#fff',
             border: 'none',
-            borderRadius: '5px'
+            borderRadius: '5px',
+            marginRight: '10px'
           }}
         >
           Reset Queues
+        </button>
+        
+        <button 
+          onClick={handleConfigureClick} 
+          style={{
+            padding: '10px 20px', 
+            fontSize: '16px', 
+            cursor: 'pointer', 
+            backgroundColor: '#28a745', 
+            color: '#fff',
+            border: 'none',
+            borderRadius: '5px'
+          }}
+        >
+          Save Configuration
         </button>
       </div>
     </div>
