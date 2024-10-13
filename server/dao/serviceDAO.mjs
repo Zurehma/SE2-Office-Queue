@@ -68,11 +68,37 @@ const getCounters = () => {
   });
 };
 
+/**
+ *
+ * @param {*} counterID
+ * @param {*} serviceID
+ * @param {*} officer
+ * @param {*} date
+ * @returns
+ */
 const addServedCustomer = (counterID, serviceID, officer, date) => {
   return new Promise((resolve, reject) => {
     const query = "INSERT INTO served (counterId, serviceId, officer, date) VALUES (?, ?, ?, ?)";
 
     db.run(query, [counterID, serviceID, officer, date], function (err) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(this.changes);
+      }
+    });
+  });
+};
+
+/**
+ *
+ * @returns
+ */
+const deleteConfiguration = () => {
+  return new Promise((resolve, reject) => {
+    const query = "DELETE FROM servicesPerCounter";
+
+    db.run(query, [], function (err) {
       if (err) {
         reject(err);
       } else {
@@ -106,7 +132,7 @@ const getServiceDetails = (serviceName) => {
       }
     });
   });
-}
+};
 
 //for each counter, get the services that are available
 const getServicesForAllCounters = () => {
@@ -120,14 +146,14 @@ const getServicesForAllCounters = () => {
       }
     });
   });
-}
-
+};
 
 function ServiceDAO() {
   this.getServices = getServices;
   this.getCounters = getCounters;
   this.getServicesPerCounter = getServicesPerCounter;
   this.addServedCustomer = addServedCustomer;
+  this.deleteConfiguration = deleteConfiguration;
   this.getServiceCode = getServiceCode;
   this.getServiceDetails = getServiceDetails;
   this.getServicesForAllCounters = getServicesForAllCounters;

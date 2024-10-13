@@ -20,9 +20,9 @@ const calculateEstimatedWaitTime = async (queueLength, serviceDetails, counterSe
     }
   });
 
-  const estimatedWaitTime = serviceDetails.averageTime * ((queueLength / sum) + (1/2));
+  const estimatedWaitTime = serviceDetails.averageTime * (queueLength / sum + 1 / 2);
   return estimatedWaitTime;
-}
+};
 
 /**
  *
@@ -38,7 +38,6 @@ function ServiceRoutes() {
   this.getRouter = () => this.router;
 
   this.initRoutes = () => {
-
     /**
      * Route to call the next customer in the queue of one of the services provided by the counterID provided in the body of the request
      */
@@ -89,10 +88,10 @@ function ServiceRoutes() {
     /* 
       Route for user to get new ticket
     */
-     this.router.post(
+    this.router.post(
       "/ticket",
       [body("service").isString().notEmpty(), Utility.validateRequest],
-      async (req, res,next) => {
+      async (req, res, next) => {
         try {
           const serviceName = req.body.service.toLowerCase();
           const serviceDetails = await this.serviceDAO.getServiceDetails(serviceName);
@@ -104,7 +103,6 @@ function ServiceRoutes() {
 
           const serviceCode = serviceDetails.code;
           const queueLength = this.queueManager.length(serviceCode);
-          
 
           const allServices = await this.serviceDAO.getServicesForAllCounters();
           const counterServicesMapped = {};
@@ -117,16 +115,18 @@ function ServiceRoutes() {
           });
 
           const ticket = this.queueManager.enqueue(serviceCode);
-          const estimatedWaitTime = await calculateEstimatedWaitTime(queueLength, serviceDetails, counterServicesMapped);
-          
+          const estimatedWaitTime = await calculateEstimatedWaitTime(
+            queueLength,
+            serviceDetails,
+            counterServicesMapped
+          );
+
           return res.status(200).json({ ticket: ticket, estimatedWaitTime: estimatedWaitTime });
-        }
-        catch (err) {
+        } catch (err) {
           return next(err);
         }
-      });
-        
-      
+      }
+    );
 
     /**
      * Route to get the list of services available
@@ -154,13 +154,29 @@ function ServiceRoutes() {
       }
     });
 
+    /**
+     * Route to reset the counter-service configuration
+     */
+    this.router.delete("/counters", Utility.isLoggedInAndAdmin, async (req, res, next) => {
+      try {
+        const changes = await this.serviceDAO.deleteConfiguration();
+
+        if (changes === 0) {
+          const err = { errCode: 400, errMessage: "No configuration available!" };
+          throw err;
+        }
+
+        return res.status(200);
+      } catch (err) {
+        return next(err);
+      }
+    });
 
     //Route for manager or admin to clear queues
     this.router.delete("/resetQueues", Utility.isLoggedIn, async (req, res) => {
       this.queueManager.reset();
       return res.status(200).json({ message: "Queues cleared" });
     });
-  
   };
 }
 
