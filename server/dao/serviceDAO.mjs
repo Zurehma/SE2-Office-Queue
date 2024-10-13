@@ -33,72 +33,16 @@ const getServices = () => {
 /**
  *
  * @param {*} counterID
- * @returns
- */
-const getServicesPerCounter = (counterID) => {
-  return new Promise((resolve, reject) => {
-    const query =
-      "SELECT s.id, name, averageTime, code FROM services s, servicesPerCounter sc WHERE s.id == sc.serviceId AND sc.counterId = ?";
-
-    db.all(query, [counterID], (err, rows) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(mapRowsToService(rows));
-      }
-    });
-  });
-};
-
-/**
- *
- * @returns
- */
-const getCounters = () => {
-  return new Promise((resolve, reject) => {
-    const query = "SELECT id FROM users WHERE role == 'manager'";
-
-    db.all(query, [], (err, rows) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(rows);
-      }
-    });
-  });
-};
-
-/**
- *
- * @param {*} counterID
  * @param {*} serviceID
  * @param {*} officer
  * @param {*} date
  * @returns
  */
-const addServedCustomer = (counterID, serviceID, officer, date) => {
+const addServedCustomer = (counterID, serviceID, date) => {
   return new Promise((resolve, reject) => {
-    const query = "INSERT INTO served (counterId, serviceId, officer, date) VALUES (?, ?, ?, ?)";
+    const query = "INSERT INTO served (counterId, serviceId, date) VALUES (?, ?, ?)";
 
-    db.run(query, [counterID, serviceID, officer, date], function (err) {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(this.changes);
-      }
-    });
-  });
-};
-
-/**
- *
- * @returns
- */
-const deleteConfiguration = () => {
-  return new Promise((resolve, reject) => {
-    const query = "DELETE FROM servicesPerCounter";
-
-    db.run(query, [], function (err) {
+    db.run(query, [counterID, serviceID, date], function (err) {
       if (err) {
         reject(err);
       } else {
@@ -150,10 +94,7 @@ const getServicesForAllCounters = () => {
 
 function ServiceDAO() {
   this.getServices = getServices;
-  this.getCounters = getCounters;
-  this.getServicesPerCounter = getServicesPerCounter;
   this.addServedCustomer = addServedCustomer;
-  this.deleteConfiguration = deleteConfiguration;
   this.getServiceCode = getServiceCode;
   this.getServiceDetails = getServiceDetails;
   this.getServicesForAllCounters = getServicesForAllCounters;

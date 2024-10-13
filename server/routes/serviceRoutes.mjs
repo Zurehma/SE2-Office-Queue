@@ -1,4 +1,4 @@
-// Module for the authentication routes
+// Module for the service routes
 
 import { Router } from "express";
 import { check, body, param, query } from "express-validator";
@@ -8,6 +8,7 @@ import Utility from "../utilities.mjs";
 
 import ServiceDAO from "../dao/serviceDAO.mjs";
 import QueueManager from "../models/queue.mjs";
+import CounterDAO from "../dao/counterDAO.mjs";
 
 const calculateEstimatedWaitTime = async (queueLength, serviceDetails, counterServicesMapped) => {
   let sum = 0;
@@ -32,6 +33,7 @@ function ServiceRoutes() {
 
   this.queueManager = new QueueManager();
   this.serviceDAO = new ServiceDAO();
+  this.counterDAO = new CounterDAO();
 
   this.queueManager.init();
 
@@ -44,7 +46,6 @@ function ServiceRoutes() {
     this.router.post(
       "/ticket/next",
       Utility.isLoggedInAndManager,
-      body("counterID").isInt({ gt: 0 }),
       body("date").isISO8601({ strict: true }),
       Utility.validateRequest,
       async (req, res, next) => {
@@ -54,7 +55,7 @@ function ServiceRoutes() {
             throw err;
           }
 
-          const services = await this.serviceDAO.getServicesPerCounter(req.body.counterID);
+          let services = await this.counterDAO.getConfiguration(req.user.id);
 
           if (services.length === 0) {
             const err = { errCode: 404, errMessage: "The counter does not exist!" };
@@ -64,7 +65,9 @@ function ServiceRoutes() {
           const maxQueueLength = Math.max(
             ...[...services].map((service) => this.queueManager.length(service.code))
           );
-          services.filter((service) => this.queueManager.length(service.code) === maxQueueLength);
+          services = [...services].filter(
+            (service) => this.queueManager.length(service.code) === maxQueueLength
+          );
           const minAverageTime = Math.min(...[...services].map((service) => service.averageTime));
           const service = services.find((service) => service.averageTime === minAverageTime);
           const ticket = this.queueManager.dequeue(service.code);
@@ -74,11 +77,9 @@ function ServiceRoutes() {
             throw err;
           }
 
-          await this.serviceDAO.addServedCustomer(req.body.counterID, service.id, req.user.id, req.body.date);
+          await this.serviceDAO.addServedCustomer(req.user.id, service.id, req.body.date);
 
-          return res
-            .status(200)
-            .json({ serviceCode: service.code, ticket: ticket, counterID: req.body.counterID });
+          return res.status(200).json({ serviceID: service.id, ticket: ticket });
         } catch (err) {
           return next(err);
         }
@@ -135,38 +136,20 @@ function ServiceRoutes() {
       try {
         const services = await this.serviceDAO.getServices();
 
-        return res.status(200).json({ services: services });
+        return res.status(200).json(services);
       } catch (err) {
         return next(err);
       }
     });
 
     /**
-     * Route to get the list of counter's id
+     * Route to get the list of services of the currently logged manager
      */
-    this.router.get("/counters", Utility.isLoggedIn, async (req, res, next) => {
+    this.router.get("/manager", async (req, res, next) => {
       try {
-        const counters = await this.serviceDAO.getCounters();
+        const services = await this.serviceDAO.getServicesPerCounter(req.user.id);
 
-        return res.status(200).json({ counters: counters });
-      } catch (err) {
-        return next(err);
-      }
-    });
-
-    /**
-     * Route to reset the counter-service configuration
-     */
-    this.router.delete("/counters", Utility.isLoggedInAndAdmin, async (req, res, next) => {
-      try {
-        const changes = await this.serviceDAO.deleteConfiguration();
-
-        if (changes === 0) {
-          const err = { errCode: 400, errMessage: "No configuration available!" };
-          throw err;
-        }
-
-        return res.status(200);
+        return res.status.json(services);
       } catch (err) {
         return next(err);
       }
