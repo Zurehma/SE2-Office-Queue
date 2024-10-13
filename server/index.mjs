@@ -8,6 +8,7 @@ import bodyParser from "body-parser";
 import Utility from "./utilities.mjs";
 import AuthRoutes from "./routes/authRoutes.mjs";
 import ServiceRoutes from "./routes/serviceRoutes.mjs";
+import CounterRoutes from "./routes/counterRoutes.mjs";
 
 const app = new express();
 const port = 3001;
@@ -26,12 +27,15 @@ app.use(
 
 const authRoutes = new AuthRoutes(app);
 const serviceRoutes = new ServiceRoutes();
+const counterRoutes = new CounterRoutes();
 
 authRoutes.initRoutes();
 serviceRoutes.initRoutes();
+counterRoutes.initRoutes();
 
 app.use(baseURL + "/sessions", authRoutes.getRouter());
 app.use(baseURL + "/service", serviceRoutes.getRouter());
+app.use(baseURL + "/counter", counterRoutes.getRouter());
 app.use(Utility.errorHandler);
 
 app.listen(port, () => console.log(`Server listening at http://localhost:${port}`));
