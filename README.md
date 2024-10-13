@@ -82,18 +82,16 @@ All of the fields of the tables are reported exactly as they have been defined u
 
 - Request Parameters: _None_
 - Request Body: An object with the following parameters:
-  - `counterID`: an integer that represent the ID of the counter that made the request.
   - `date`: a string that represent a date. It must be in the format **YYYY-MM-DD**.
 - Response Body: An object with the following parameters:
-  - `serviceCode`: a string that represent the code of the service.
+  - `serviceID`: an integer that represent the ID of the service.
   - `ticket`: a string that represent the next ticket to serve.
-  - `counterID`: an integer that represent the ID of the counter that made the request.
-  - Example: `{ serviceCode: "PS", ticket: "PS1", counterID: 2 }`
+  - Example: `{ serviceCode: "PS", ticket: "PS1" }`
 - Access Constraints: Can only be called by a logged in user whose role is Manager
 - Additional Constraints:
   - It should return a 400 error if the queues are empty.
   - It should return a 400 error if the `date` is after the current date.
-  - It should return a 404 error if the `counterID` does not represent a counter account in the database.
+  - It should return a 404 error if the manager does not has any service assigned.
 
 #### GET `api/service`
 
@@ -108,7 +106,17 @@ All of the fields of the tables are reported exactly as they have been defined u
 - Access Constraints: _None_
 - Additional Constraints: _None_
 
-#### GET `api/service/counters`
+#### DELETE `api/service/resetQueues`
+
+- Request Parameters: _None_
+- Request Body: _None_
+- Response Body: Success Message
+- Access Constraints: Can only be called by a logged in user whose role is either Admin or Manager
+- Additional Constraints: _None_
+
+### Counter APIs
+
+#### GET `api/counter`
 
 - Request Parameters: _None_
 - Request Body: _None_
@@ -117,7 +125,17 @@ All of the fields of the tables are reported exactly as they have been defined u
 - Access Constraints: Can only be called by a logged in user whose role is either Admin or Manager
 - Additional Constraints: _None_
 
-#### DELETE `api/service/counters`
+#### POST `api/counter/configuration`
+
+- Request Parameters: _None_
+- Request Body: An array of object with the following parameters:
+  - `counterID`: an integer that represent the ID of the counter.
+  - `serviceIDs`: an array of integers that represent all the service's ids.
+- Response Body: **None**
+- Access Contraints: Can only be called by a logged in user whose role is Admin
+- Additional Contraints: TODO
+
+#### DELETE `api/counter/configuration`
 
 - Request Parameters: _None_
 - Request Body: _None_
@@ -125,14 +143,6 @@ All of the fields of the tables are reported exactly as they have been defined u
 - Access Constraints: Can only be called by a logged in user whose role is Admin
 - Additional Constraints:
   - It should return a 400 error if there is no configuration available.
-
-#### DELETE `api/service/resetQueues`
-
-- Request Parameters: _None_
-- Request Body: _None_
-- Response Body: Success Message
-- Access Constraints: Can only be called by a logged in user whose role is either Admin or Manager
-- Additional Constraints: _None_
 
 ### User APIs
 
