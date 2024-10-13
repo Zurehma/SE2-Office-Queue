@@ -24,11 +24,28 @@ const getTicket = async () => {
 };
 
 /**
+ * This function is to get a new ticket given the service type
+ */
+const getTicketByService = async (service) => {
+  const requestBody = {
+    service: service
+  };
+  return await fetch(SERVER_URL + '/api/service/ticket', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify(requestBody),
+  }).then(handleInvalidResponse).then(response => response.json());
+};
+
+
+/**
  * This function wants username and password inside a "credentials" object.
  * It executes the log-in.
  */
 const logIn = async (credentials) => {
-  console.log(credentials)
   return await fetch(SERVER_URL + '/api/sessions/login', {
       method: 'POST',
       headers: {
@@ -56,6 +73,10 @@ const logOut = async() => {
   }).then(handleInvalidResponse);
 }
 
+
+/**
+ * Utility function to handle invalid responses from the server.
+ */
 function handleInvalidResponse(response) {
   if (!response.ok) { throw Error(response.statusText) }
   let type = response.headers.get('Content-Type');
@@ -69,7 +90,8 @@ const API = {
   getTicket,
   logIn,
   getUserInfo,
-  logOut
+  logOut,
+  getTicketByService
 };
 
 export default API;

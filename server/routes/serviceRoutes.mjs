@@ -9,6 +9,21 @@ import Utility from "../utilities.mjs";
 import ServiceDAO from "../dao/serviceDAO.mjs";
 import QueueManager from "../models/queue.mjs";
 
+const calculateEstimatedWaitTime = async (queueLength, serviceDetails, counterServicesMapped) => {
+  let sum = 0;
+  Object.keys(counterServicesMapped).forEach((counterId) => {
+    const services = counterServicesMapped[counterId];
+    const canServe = services.includes(serviceDetails.id);
+    if (canServe) {
+      const k_i = services.length;
+      sum += 1 / k_i;
+    }
+  });
+
+  const estimatedWaitTime = serviceDetails.averageTime * ((queueLength / sum) + (1/2));
+  return estimatedWaitTime;
+}
+
 /**
  *
  */
@@ -23,6 +38,7 @@ function ServiceRoutes() {
   this.getRouter = () => this.router;
 
   this.initRoutes = () => {
+
     /**
      * Route to call the next customer in the queue of one of the services provided by the counterID provided in the body of the request
      */
@@ -70,6 +86,48 @@ function ServiceRoutes() {
       }
     );
 
+    /* 
+      Route for user to get new ticket
+    */
+     this.router.post(
+      "/ticket",
+      [body("service").isString().notEmpty(), Utility.validateRequest],
+      async (req, res,next) => {
+        try {
+          const serviceName = req.body.service.toLowerCase();
+          const serviceDetails = await this.serviceDAO.getServiceDetails(serviceName);
+
+          if (serviceDetails === undefined) {
+            const err = { errCode: 400, errMessage: "Service not found" };
+            throw err;
+          }
+
+          const serviceCode = serviceDetails.code;
+          const queueLength = this.queueManager.length(serviceCode);
+          
+
+          const allServices = await this.serviceDAO.getServicesForAllCounters();
+          const counterServicesMapped = {};
+          allServices.forEach((service) => {
+            const { counterId, serviceId } = service;
+            if (counterServicesMapped[counterId] === undefined) {
+              counterServicesMapped[counterId] = [];
+            }
+            counterServicesMapped[counterId].push(serviceId);
+          });
+
+          const ticket = this.queueManager.enqueue(serviceCode);
+          const estimatedWaitTime = await calculateEstimatedWaitTime(queueLength, serviceDetails, counterServicesMapped);
+          
+          return res.status(200).json({ ticket: ticket, estimatedWaitTime: estimatedWaitTime });
+        }
+        catch (err) {
+          return next(err);
+        }
+      });
+        
+      
+
     /**
      * Route to get the list of services available
      */
@@ -96,31 +154,13 @@ function ServiceRoutes() {
       }
     });
 
-    //Route for user to get new ticket
-    this.router.post(
-      "/ticket",
-      [check("service").isString().notEmpty(), Utility.validateRequest],
-      async (req, res, next) => {
-        try {
-          const service = req.body.service.toLowerCase();
-          const serviceCode = await this.serviceDAO.getServiceCode(service);
-          if (serviceCode === undefined) {
-            const error = { errCode: 400, errMessage: "Invalid service!" };
-            throw error;
-          }
-          const ticket = this.queueManager.enqueue(serviceCode);
-          return res.status(200).json({ ticket: ticket });
-        } catch (err) {
-          return next(err);
-        }
-      }
-    );
 
     //Route for manager or admin to clear queues
-    this.router.delete("/resetQueues", Utility.isLoggedInAndAdmin, async (req, res) => {
+    this.router.delete("/resetQueues", Utility.isLoggedIn, async (req, res) => {
       this.queueManager.reset();
       return res.status(200).json({ message: "Queues cleared" });
     });
+  
   };
 }
 
