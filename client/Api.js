@@ -24,11 +24,28 @@ const getTicket = async () => {
 };
 
 /**
+ * This function is to get a new ticket given the service type
+ */
+const getTicketByService = async (service) => {
+  const requestBody = {
+    serviceName: service
+  };
+  return await fetch(SERVER_URL + '/api/service/ticket', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify(requestBody),
+  }).then(handleInvalidResponse).then(response => response.json());
+};
+
+
+/**
  * This function wants username and password inside a "credentials" object.
  * It executes the log-in.
  */
 const logIn = async (credentials) => {
-  console.log(credentials)
   return await fetch(SERVER_URL + '/api/sessions/login', {
       method: 'POST',
       headers: {
@@ -73,7 +90,8 @@ const API = {
   getTicket,
   logIn,
   getUserInfo,
-  logOut
+  logOut,
+  getTicketByService
 };
 
 export default API;

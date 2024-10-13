@@ -70,7 +70,7 @@ function App() {
         </Alert>
         )}
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home setError={setError} />} />
           <Route path="/login" element={ 
               loggedIn ? <Navigate replace to='/' /> : <LoginForm login={handleLogin}/>}/>
           <Route path="/customer-service" element={<CustomerHalf errror = {error} setError={setError}/>}/>
