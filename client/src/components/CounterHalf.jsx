@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import API from '../../Api.js'; 
 
-const CounterHalf = (props) => {
+const CounterHalf = () => {
   const [currentCustomer, setCurrentCustomer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -22,7 +22,6 @@ const CounterHalf = (props) => {
   };
   
   
-
   // Funzione per passare al prossimo cliente
   const handleNextCustomer = async () => {
     setLoading(true); // Imposta lo stato di caricamento
@@ -66,42 +65,3 @@ const CounterHalf = (props) => {
 
 export default CounterHalf;
 
-
-
-
-
-
-
-
-
-// const getNextTicket = async (counterID) => {
-//   try {
-//     const currentDate = dayjs().toISOString(); // Ottieni la data corrente in formato ISO
-//     console.log('Current date:', currentDate);
-//     console.log('Counter ID:', counterID); // Log del counterID
-
-//     const response = await fetch(SERVER_URL + '/api/service/ticket/next', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       credentials: 'include',
-//       body: JSON.stringify({ counterID: counterID, date: currentDate }), // Invia il counterID e la data
-//     });
-//     console.log('booooh');
-//     console.log('Response:', response);
-//     if (!response.ok) {
-//       console.log('azzzzz');
-//       const errorBody = await response.text(); // Leggi il corpo della risposta
-//       throw new Error(`Failed to fetch the next ticket: ${response.statusText} - ${errorBody}`);
-//     }
-
-//     const nextTicketData = await response.json();
-//     console.log('Next ticket data:', nextTicketData);
-//     return nextTicketData;
-
-//   } catch (error) {
-//     console.error('Error fetching the next ticket:', error);
-//     throw error;
-//   }
-// };
