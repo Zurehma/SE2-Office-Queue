@@ -1,5 +1,6 @@
 import request from "supertest";
 import { app } from "../index.mjs";
+import ServiceDAO from "../dao/serviceDAO.mjs";
 
 const baseURL = "/api/service";
 
@@ -9,6 +10,7 @@ test ('POST /ticket', async () => {
         .send({
         service: 'Money Transfer'
         });
+        
     expect(response.statusCode).toBe(200);
     expect(response.body).toMatchObject({
         ticket: "MT1",
