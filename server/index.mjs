@@ -35,3 +35,5 @@ app.use(baseURL + "/service", serviceRoutes.getRouter());
 app.use(Utility.errorHandler);
 
 app.listen(port, () => console.log(`Server listening at http://localhost:${port}`));
+
+export { app };
