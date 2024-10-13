@@ -69,7 +69,7 @@ All of the fields of the tables are reported exactly as they have been defined u
 
 - Request Paramaters: _None_
 - Request Body: 
-  - `serviceName`: a string that represents the name of the service being requested by the cutomer
+  - `service`: a string that represents the name of the service being requested by the customer. Must be one of the following [`"Public Service", "Money Transfer", "Shipping and Receiving"`]
 - Response Body: An object with the following paramters:
   - `ticket`: A string that represents the ticket number assigned to the customer. It is made up of two letters representing the service type and an integer representing the place in the queue.
   - `estimatedWaitTime`: A number that represents the estimated number of minutes the customer will have to wait for their turn.
