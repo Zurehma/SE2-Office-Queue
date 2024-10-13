@@ -8,7 +8,7 @@ export function Home(props){
       .then((ticket) => {
         //here we should navigate to the correct page by passing the ticket as a prop
         console.log(ticket);
-        Navigate('/ticket', {state: {ticket: ticket}});
+        //Navigate('/ticket', {state: {ticket: ticket}});
       })
       .catch((err) => {
         props.setError(err);
@@ -20,17 +20,17 @@ export function Home(props){
     <div className="service-wrapper">
       <h2 className="service-title">Select type of service</h2>
       <div className="service-container">
-        <button className="service-button" onClick={() => handleClick('Public Service')}>
+        <button className="service-button" onClick={() => handleClick('public service')}>
           <i className="bi bi-bank service-icon"></i>
           <p>PUBLIC SERVICE</p>
         </button>
 
-        <button className="service-button" onClick={() => handleClick('Money Transfer')}>
+        <button className="service-button" onClick={() => handleClick('MONEY TRANSFER')}>
           <i className="bi bi-cash-stack service-icon"></i>
           <p>MONEY TRANSFER</p>
         </button>
 
-        <button className="service-button" onClick={() => handleClick('Shipping and Receiving')}>
+        <button className="service-button" onClick={() => handleClick('shipping and RECEIVING')}>
           <i className="bi bi-truck service-icon"></i>
           <p>SHIPPING AND RECEIVING</p>
         </button>

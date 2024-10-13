@@ -28,7 +28,7 @@ const getTicket = async () => {
  */
 const getTicketByService = async (service) => {
   const requestBody = {
-    serviceName: service
+    service: service
   };
   return await fetch(SERVER_URL + '/api/service/ticket', {
     method: 'POST',
