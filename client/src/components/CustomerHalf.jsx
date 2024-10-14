@@ -19,7 +19,7 @@ const CustomerHalf = (props) => {
           zIndex: -1
         }}
       />
-      <CustomerHalfContainer error={props.error} setError={props.setError} ticket={15} estimatedTime={30} />
+      <CustomerHalfContainer error={props.error} setError={props.setError} ticket={props.ticket} estimatedTime={props.estimatedTime} />
     </>
   );
 };
