@@ -49,6 +49,7 @@ function App() {
     API.getUserInfo().then((user) => {
       setUser(user);
       setLoggedIn(true);
+      navigate('/main');
     }).catch((err) => setError(err));
   };
 
@@ -76,10 +77,10 @@ function App() {
           <Route path="/" element={<Home setError={setError} />} />
           <Route path="/login" element={ 
               loggedIn ? <Navigate replace to='/' /> : <LoginForm login={handleLogin}/>}/>
-          <Route path="/customer-service" element={<CustomerHalf errror = {error} setError={setError}/>}/>
+          {/* <Route path="/customer-service" element={<CustomerHalf errror = {error} setError={setError}/>}/> */}
           <Route path='main' element={<Main role={user ? user.role : 'customer'} />} />
-          <Route path="/manager" element={<ManagerHalf error = {error} setError={setError}/>}/>
-          <Route path="/counter" element={<CounterHalf error = {error} setError={setError}/>}/>
+          {/* <Route path="/manager" element={<ManagerHalf error = {error} setError={setError}/>}/>
+          <Route path="/counter" element={<CounterHalf error = {error} setError={setError}/>}/> */}
           <Route path='*' element={<NotFound/>}/>
         </Routes>
       </Container>

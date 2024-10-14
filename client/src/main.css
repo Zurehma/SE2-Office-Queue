@@ -1,0 +1,9 @@
+/* Assuming you have a CSS or SCSS file for the Main component */
+.container-fluid {
+    background-image: url('./assets/backgroundCustomer.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh; /* Full height of the viewport */
+  }
+  
