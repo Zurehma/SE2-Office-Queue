@@ -5,18 +5,16 @@ import '../styles.css';
 import Board from './Board'; 
 
 
-const CounterHalf = () => {
-  const [currentCustomer, setCurrentCustomer] = useState(null);
+const CounterHalf = (props) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
   const fetchCustomerData = async () => {
     try {
       const data = await API.getNextTicket(2);
-      setCurrentCustomer(data);
+      props.setCurrentCustomer(data);
       setError('');
     } catch (error) {
-      setError('Error fetching customer');
+      props.setCurrentCustomer(null);
     } finally {
       setLoading(false);
     }
@@ -56,10 +54,10 @@ const CounterHalf = () => {
       />
       <div className="container vh-100 d-flex align-items-center justify-content-center">
         <div className="row w-100">
-          <div className="col-md-6 d-flex flex-column justify-content-center align-items-center">
+          <div className="col d-flex flex-column justify-content-center align-items-center">
             <div className="info-container text-center" style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)', padding: '20px', borderRadius: '10px' }}>
               <h2 style={{ color: 'white', fontWeight: 'bold', fontSize: '3rem' }}>
-                Ticket in Service: {currentCustomer.ticket}
+                Ticket in Service: {props.currentCustomer?.ticket ? props.currentCustomer.ticket : 'No customer in service'}
               </h2>
               <button
                 className="btn btn-primary"
@@ -69,10 +67,6 @@ const CounterHalf = () => {
                 Next Customer
               </button>
             </div>
-          </div>
-
-          <div className="col-md-6">
-            <Board currentCustomer={currentCustomer} />
           </div>
         </div>
       </div>
