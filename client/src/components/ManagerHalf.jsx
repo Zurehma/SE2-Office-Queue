@@ -41,7 +41,7 @@ const saveServicesForCounters = async (counterServices) => {
   }
 };
 
-const ManagerHalf = (props) => {
+const ManagerHalf = () => {
   return (
     <>
       <img
@@ -57,7 +57,7 @@ const ManagerHalf = (props) => {
           zIndex: -1,
         }}
       />
-      <ManagerHalfContainer currentCustomer={props.currentCustomer} setCurrentCustomer={props.setCurrentCustomer} />
+      <ManagerHalfContainer />
     </>
   );
 };
@@ -107,8 +107,7 @@ const ManagerHalfContainer = () => {
   };
 
   return (
-    <>
-      <div style={{ padding: '20px', color: '#fff' }}>
+    <div style={{ padding: '20px', color: '#fff' }}>
       <h1>Manager Dashboard</h1>
 
       <h2>Assign Services to Counters</h2>
@@ -187,11 +186,6 @@ const ManagerHalfContainer = () => {
         </button>
       </div>
     </div>
-      <div className="col-md-6">
-        <Board currentCustomer={props.currentCustomer} /> 
-      </div>
-    </>
-    
   );
 };
 

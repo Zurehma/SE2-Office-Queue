@@ -66,7 +66,7 @@ const CounterHalf = (props) => {
               >
                 Next Customer
               </button>
-            </div>  
+            </div>
           </div>
         </div>
       </div>
@@ -75,4 +75,3 @@ const CounterHalf = (props) => {
 };
 
 export default CounterHalf;
-

@@ -16,5 +16,3 @@ const Board = ({ currentCustomer }) => {
 };
 
 export default Board;
-
-
