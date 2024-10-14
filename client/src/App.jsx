@@ -20,6 +20,7 @@ import {LoginForm} from './components/Auth';
 import CustomerHalf from './components/CustomerHalf';
 import ManagerHalf from './components/ManagerHalf';
 import NotFound from './components/NotFound';
+import CounterHalf from './components/CounterHalf';
 
 
 function App() {
@@ -75,6 +76,7 @@ function App() {
               loggedIn ? <Navigate replace to='/' /> : <LoginForm login={handleLogin}/>}/>
           <Route path="/customer-service" element={<CustomerHalf errror = {error} setError={setError}/>}/>
           <Route path="/manager" element={<ManagerHalf errror = {error} setError={setError}/>}/>
+          <Route path="/counter" element={<CounterHalf errror = {error} setError={setError}/>}/>
           <Route path='*' element={<NotFound/>}/>
         </Routes>
       </Container>

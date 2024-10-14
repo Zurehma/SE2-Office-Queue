@@ -1,4 +1,5 @@
 const SERVER_URL = 'http://localhost:3001';
+import dayjs from 'dayjs';
 
 const getTicket = async () => {
   try {
@@ -38,6 +39,41 @@ const getTicketByService = async (service) => {
     credentials: 'include',
     body: JSON.stringify(requestBody),
   }).then(handleInvalidResponse).then(response => response.json());
+};
+
+
+
+const getNextTicket = async (counterID) => {
+  try {
+    const currentDate = dayjs().toISOString(); // Ottieni la data corrente in formato ISO
+    console.log('Current date:', currentDate);
+    console.log('Counter ID:', counterID); // Log del counterID
+
+    const response = await fetch(SERVER_URL + '/api/service/ticket/next', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({ counterID: counterID, date: currentDate }), // Invia il counterID e la data
+    });
+
+    console.log('Response:', response);
+
+    if (!response.ok) {
+      console.log('azzzzz');
+      const errorBody = await response.text(); // Leggi il corpo della risposta
+      throw new Error(`Failed to fetch the next ticket: ${response.statusText} - ${errorBody}`);
+    }
+
+    const nextTicketData = await response.json();
+    console.log('Next ticket data:', nextTicketData);
+    return nextTicketData;
+
+  } catch (error) {
+    console.error('Error fetching the next ticket:', error);
+    throw error;
+  }
 };
 
 
@@ -91,6 +127,7 @@ const API = {
   logIn,
   getUserInfo,
   logOut,
+  getNextTicket,
   getTicketByService
 };
 
