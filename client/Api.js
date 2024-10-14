@@ -46,8 +46,8 @@ const getTicketByService = async (service) => {
 const getNextTicket = async (counterID) => {
   try {
     const currentDate = dayjs().toISOString(); // Ottieni la data corrente in formato ISO
-    console.log('Current date:', currentDate);
-    console.log('Counter ID:', counterID); // Log del counterID
+    // console.log('Current date:', currentDate);
+    // console.log('Counter ID:', counterID); // Log del counterID
 
     const response = await fetch(SERVER_URL + '/api/service/ticket/next', {
       method: 'POST',

@@ -5,15 +5,31 @@ import '../styles.css';
 import Board from './Board'; 
 
 
-const CounterHalf = () => {
-  const [currentCustomer, setCurrentCustomer] = useState(null);
+const CounterHalf = (props) => {
+  // const [currentCustomer, setCurrentCustomer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  // console.log(props.user.id+1);
+  // const {user} = props
+  
 
   const fetchCustomerData = async () => {
     try {
-      const data = await API.getNextTicket(2);
-      setCurrentCustomer(data);
+      const userInfo = await API.getUserInfo();
+      // console.log(userInfo);
+      
+
+      // Check if manager1 exists, otherwise check manager2
+      let number = null;
+      if (userInfo.username == 'manager1') {
+        number = 2;  // Extract the number from manager1
+      } else if (userInfo.username == 'manager2') {
+        number = 3; // Extract the number from manager2
+      }
+            
+      // console.log(user);
+      const data = await API.getNextTicket(number);
+      props.setCurrentCustomer(data);
       setError('');
     } catch (error) {
       setError('Error fetching customer');
@@ -59,7 +75,7 @@ const CounterHalf = () => {
           <div className="col-md-6 d-flex flex-column justify-content-center align-items-center">
             <div className="info-container text-center" style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)', padding: '20px', borderRadius: '10px' }}>
               <h2 style={{ color: 'white', fontWeight: 'bold', fontSize: '3rem' }}>
-                Ticket in Service: {currentCustomer.ticket}
+                Ticket in Service: {props.currentCustomer.ticket}
               </h2>
               <button
                 className="btn btn-primary"
@@ -68,11 +84,11 @@ const CounterHalf = () => {
               >
                 Next Customer
               </button>
-            </div>
+            </div>  
           </div>
 
           <div className="col-md-6">
-            <Board currentCustomer={currentCustomer} />
+            <Board currentCustomer={props.currentCustomer} />
           </div>
         </div>
       </div>

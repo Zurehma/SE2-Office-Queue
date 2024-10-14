@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import QRCode from 'react-qr-code';
 import backgroundImage from '../assets/backgroundCustomer.jpg'; 
 import '../styles.css'
+import Board from './Board';
 
 const CustomerHalf = (props) => {
-  console.log(props.ticket.ticket);
-  console.log(props.ticket.estimatedWaitTime);
+  // console.log(props.ticket.ticket);
+  // console.log(props.ticket.estimatedWaitTime);
   
   
   return (
@@ -23,7 +24,7 @@ const CustomerHalf = (props) => {
           zIndex: -1
         }}
       />
-      <CustomerHalfContainer error={props.error} setError={props.setError} ticketInfo={props.ticket}  />
+      <CustomerHalfContainer error={props.error} setError={props.setError} ticketInfo={props.ticket} currentCustomer={props.currentCustomer} setCurrentCustomer={props.setCurrentCustomer} />
     </>
   );
 };
@@ -47,6 +48,7 @@ const CustomerHalfContainer = (props) => {
   const ticketNumber = (ticket || 'N/A');  // Assuming `ticket` has a `ticket` field
 
   return (
+    <>
     <div className="container vh-100 d-flex align-items-center justify-content-center">
       <div className="row w-100">
         <div className="col-md-6 d-flex flex-column justify-content-center align-items-center">
@@ -70,8 +72,13 @@ const CustomerHalfContainer = (props) => {
             )}
           </div>
         </div>
+        <div className="col-md-6">
+            <Board currentCustomer={props.currentCustomer} />
+          </div>
+        
       </div>
     </div>
+    </>
   );
 };
 
