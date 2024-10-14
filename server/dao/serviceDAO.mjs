@@ -71,6 +71,8 @@ const getServiceDetails = (serviceName) => {
     db.get(query, [serviceName], (err, row) => {
       if (err) {
         reject(err);
+      } else if (!row) {
+        resolve(undefined);
       } else {
         resolve(mapRowsToService([row])[0]);
       }
