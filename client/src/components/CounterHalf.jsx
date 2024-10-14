@@ -1,40 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import API from '../../Api.js'; 
+import API from '../../Api.js';
+import backgroundImage from '../assets/backgroundCustomer.jpg'; 
+import '../styles.css'; 
+import Board from './Board'; 
+
 
 const CounterHalf = () => {
   const [currentCustomer, setCurrentCustomer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Funzione per ottenere il cliente corrente da servire
   const fetchCustomerData = async () => {
     try {
-      const data = await API.getNextTicket(2); // Ottieni i dati direttamente
-      console.log('Dati ricevuti dal server:', data); // Log per verificare i dati ricevuti
-      setCurrentCustomer(data); // Imposta il cliente attuale
-      setError(''); // Pulisce eventuali errori
+      const data = await API.getNextTicket(2);
+      setCurrentCustomer(data);
+      setError('');
     } catch (error) {
-      console.error('Error fetching customer data:', error);
-      setError('Errore nel recupero del clienteeee');
+      setError('Error fetching customer');
     } finally {
       setLoading(false);
     }
   };
-  
-  
-  // Funzione per passare al prossimo cliente
+
   const handleNextCustomer = async () => {
-    setLoading(true); // Imposta lo stato di caricamento
-    await fetchCustomerData(); // Richiama la funzione per ottenere il prossimo cliente
+    setLoading(true);
+    await fetchCustomerData();
   };
 
-  // Prima chiamata per ottenere il cliente attuale
   useEffect(() => {
     fetchCustomerData();
   }, []);
 
   if (loading) {
-    return <div style={{ color: 'white' }}>Caricamento...</div>;
+    return <div style={{ color: 'white' }}>Loading...</div>;
   }
 
   if (error) {
@@ -42,24 +40,43 @@ const CounterHalf = () => {
   }
 
   return (
-    <div className="container vh-100 d-flex align-items-center justify-content-center">
-      <div className="row w-100">
-        <div className="col-md-6 d-flex flex-column justify-content-center align-items-center">
-          <div className="info-container text-center">
-            <p style={{ color: 'white', fontWeight: 'bold' }}>
-              Ticket in Servizio: {currentCustomer.ticketNumber}
-            </p>
-            <button
-              className="btn btn-primary"
-              onClick={handleNextCustomer}
-              style={{ marginTop: '20px' }}
-            >
-              Prossimo Cliente
-            </button>
+    <>
+      <img
+        src={backgroundImage}
+        alt="Background"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100vh',
+          objectFit: 'cover',
+          zIndex: -1
+        }}
+      />
+      <div className="container vh-100 d-flex align-items-center justify-content-center">
+        <div className="row w-100">
+          <div className="col-md-6 d-flex flex-column justify-content-center align-items-center">
+            <div className="info-container text-center" style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)', padding: '20px', borderRadius: '10px' }}>
+              <h2 style={{ color: 'white', fontWeight: 'bold', fontSize: '3rem' }}>
+                Ticket in Service: {currentCustomer.ticket}
+              </h2>
+              <button
+                className="btn btn-primary"
+                onClick={handleNextCustomer}
+                style={{ marginTop: '20px', padding: '10px 20px', fontSize: '1.5rem' }}
+              >
+                Next Customer
+              </button>
+            </div>
+          </div>
+
+          <div className="col-md-6">
+            <Board currentCustomer={currentCustomer} />
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
