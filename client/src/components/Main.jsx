@@ -1,11 +1,17 @@
 import React from 'react';
 import CustomerHalf from './CustomerHalf';
 import ManagerHalf from './ManagerHalf'; 
-///imports of Counter and board should be addded
-
+import Board from './Board';
+import CounterHalf from './CounterHalf';
+import { useLocation } from 'react-router-dom';
 
 const Main = (props) => {
   const { role } = props; 
+  const location = useLocation();
+  const ticket = location.state?.ticket;  
+  
+  
+  
 
   
   const renderLeftHalf = () => {
@@ -15,7 +21,7 @@ const Main = (props) => {
       case 'admin':
         return <CounterHalf />;
       default:
-        return <CustomerHalf />;
+        return <CustomerHalf ticket = {ticket}/>;
     }
   };
 
@@ -30,7 +36,7 @@ const Main = (props) => {
           <Board />
         </div>
       </div>
-    </div>
+    </div>                        
   );
 };
 

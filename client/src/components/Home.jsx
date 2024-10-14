@@ -3,14 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import API from '../../Api';
 
 export function Home(props){
+  const navigate = useNavigate();
+
   const handleClick = (serviceType) => {
+
     API.getTicketByService(serviceType)
       .then((ticket) => {
         //here we should navigate to the correct page by passing the ticket as a prop
         console.log(ticket);
-        //Navigate('/ticket', {state: {ticket: ticket}});
+        navigate('/main', {state: {ticket: ticket}});
       })
-      .catch((err) => {
+      .catch((err) => { 
         props.setError(err);
       });
   };

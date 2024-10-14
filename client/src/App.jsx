@@ -21,6 +21,7 @@ import CustomerHalf from './components/CustomerHalf';
 import ManagerHalf from './components/ManagerHalf';
 import NotFound from './components/NotFound';
 import CounterHalf from './components/CounterHalf';
+import Main from './components/Main';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
    * the user state is set to null if nobody logged in, otherwise it contains user info
    */
   const [user, setUser] = useState(null);
+  
   /**
    * The error state can be passed to other components, by setting it with the setError callback you areable
    * to make the Alert display which kind of error was generated 
@@ -75,8 +77,9 @@ function App() {
           <Route path="/login" element={ 
               loggedIn ? <Navigate replace to='/' /> : <LoginForm login={handleLogin}/>}/>
           <Route path="/customer-service" element={<CustomerHalf errror = {error} setError={setError}/>}/>
-          <Route path="/manager" element={<ManagerHalf errror = {error} setError={setError}/>}/>
-          <Route path="/counter" element={<CounterHalf errror = {error} setError={setError}/>}/>
+          <Route path='main' element={<Main role={user ? user.role : 'customer'} />} />
+          <Route path="/manager" element={<ManagerHalf error = {error} setError={setError}/>}/>
+          <Route path="/counter" element={<CounterHalf error = {error} setError={setError}/>}/>
           <Route path='*' element={<NotFound/>}/>
         </Routes>
       </Container>

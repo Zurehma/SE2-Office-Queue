@@ -4,6 +4,10 @@ import backgroundImage from '../assets/backgroundCustomer.jpg';
 import '../styles.css'
 
 const CustomerHalf = (props) => {
+  console.log(props.ticket.ticket);
+  console.log(props.ticket.estimatedWaitTime);
+  
+  
   return (
     <>
       <img
@@ -19,20 +23,28 @@ const CustomerHalf = (props) => {
           zIndex: -1
         }}
       />
-      <CustomerHalfContainer error={props.error} setError={props.setError} ticket={props.ticket} estimatedTime={props.estimatedTime} />
+      <CustomerHalfContainer error={props.error} setError={props.setError} ticketInfo={props.ticket}  />
     </>
   );
 };
 
 const CustomerHalfContainer = (props) => {
-  const [ticketNumber, setTicketNumber] = useState(props.ticket);
-  const [estimatedTime, setEstimatedTime] = useState(props.estimatedTime);
-  const [error, setError] = useState(null)
+  console.log('ffffffffffffff');
+  
+  const ticket = props.ticketInfo.ticket;
+  const time = props.ticketInfo.estimatedWaitTime;
 
+  
+  
+  
+  
 
   if (props.error) {
     return <div style={{ color: 'red' }}>{props.error}</div>; 
   }
+
+  // Ensure you access the ticket number correctly
+  const ticketNumber = (ticket || 'N/A');  // Assuming `ticket` has a `ticket` field
 
   return (
     <div className="container vh-100 d-flex align-items-center justify-content-center">
@@ -40,17 +52,18 @@ const CustomerHalfContainer = (props) => {
         <div className="col-md-6 d-flex flex-column justify-content-center align-items-center">
           <div className="info-container text-center">
             <h2 style={{ color: 'white', fontWeight: 'bold', fontSize: '3rem' }}>
-              Your Ticket: {ticketNumber || 'N/A'}
+              Your Ticket: {ticketNumber}  {/* Display the ticket number */}
             </h2>
             <p  
-              className={estimatedTime > 15 ? 'text-danger' : 'text-white'}
+              className={time > 15 ? 'text-danger' : 'text-white'}
               style={{ fontWeight: 'bold' }}
             >
-              Estimated waiting time: {estimatedTime} minutes
+              
+              Estimated waiting time: {time} minutes
             </p>
-            {ticketNumber ? (
+            {ticketNumber !== 'N/A' ? (
               <div className="qr-code-container">
-                <QRCode value={ticketNumber} />
+                <QRCode value={ticketNumber} />  {/* Generate QR code for ticket number */}
               </div>
             ) : (
               <p style={{ color: 'red' }}>No ticket available to generate QR code.</p>
@@ -61,5 +74,6 @@ const CustomerHalfContainer = (props) => {
     </div>
   );
 };
+
 
 export default CustomerHalf;
