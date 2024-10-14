@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">67.92% </span>
+                <span class="strong">85.84% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>72/106</span>
+                <span class='fraction'>91/106</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">66.66% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/3</span>
+                <span class='fraction'>6/9</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">20% </span>
+                <span class="strong">40% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>1/5</span>
+                <span class='fraction'>2/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">67.92% </span>
+                <span class="strong">85.84% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>72/106</span>
+                <span class='fraction'>91/106</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -226,29 +226,23 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -257,10 +251,16 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -337,21 +337,21 @@ const validateRequest = (req, res, next) =&gt; {
   if (errors.isEmpty()) {
     return next();
   }
-<span class="cstat-no" title="statement not covered" ><span class="branch-0 cbranch-no" title="branch not covered" ></span></span>
-<span class="cstat-no" title="statement not covered" >  let errorMessage = "The parameters are not formatted properly\n\n";</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  errors.array().forEach((error) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    errorMessage +=</span>
-<span class="cstat-no" title="statement not covered" >      "- Value: **" +</span>
-<span class="cstat-no" title="statement not covered" >      error.value +</span>
-<span class="cstat-no" title="statement not covered" >      "** - Reason: **" +</span>
-<span class="cstat-no" title="statement not covered" >      error.msg +</span>
-<span class="cstat-no" title="statement not covered" >      "** - Location: **" +</span>
-<span class="cstat-no" title="statement not covered" >      error.location +</span>
-<span class="cstat-no" title="statement not covered" >      "*\n\n";</span>
-<span class="cstat-no" title="statement not covered" >  });</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >  return res.status(422).json({ error: errorMessage, status: 422 });</span>
+&nbsp;
+  let errorMessage = "The parameters are not formatted properly\n\n";
+&nbsp;
+  errors.array().forEach((error) =&gt; {
+    errorMessage +=
+      "- Value: **" +
+      error.value +
+      "** - Reason: **" +
+      error.msg +
+      "** - Location: **" +
+      error.location +
+      "*\n\n";
+  });
+&nbsp;
+  return res.status(422).json({ error: errorMessage, status: 422 });
 };
 &nbsp;
 /**
@@ -362,11 +362,11 @@ const validateRequest = (req, res, next) =&gt; {
  * @param {*} next
  * @returns
  */
-const errorHandler = <span class="fstat-no" title="function not covered" >(err, req, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  return res.status(err.errCode || 503).json({</span>
-<span class="cstat-no" title="statement not covered" >    error: err.errMessage || "Internal Server Error",</span>
-<span class="cstat-no" title="statement not covered" >    status: err.errCode || 503,</span>
-<span class="cstat-no" title="statement not covered" >  });</span>
+const errorHandler = (err, req, res, next) =&gt; {
+  return res.status(err.errCode <span class="branch-0 cbranch-no" title="branch not covered" >|| 503)</span>.json({
+    error: err.errMessage <span class="branch-0 cbranch-no" title="branch not covered" >|| "Internal Server Error",</span>
+    status: err.errCode <span class="branch-0 cbranch-no" title="branch not covered" >|| 503,</span>
+  });
 };
 &nbsp;
 /**
@@ -388,7 +388,7 @@ export default Utility;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-10-13T20:28:06.807Z
+                at 2024-10-14T22:12:01.811Z
             </div>
         <script src="../prettify.js"></script>
         <script>
