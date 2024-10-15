@@ -7,7 +7,7 @@ import '@testing-library/jest-dom';
 jest.mock('react-qr-code', () => () => <div data-testid="qr-code">Mock QR Code</div>);
 
 describe('CustomerHalf Component', () => {
-  test('renders ticket information and estimated time', () => {
+  test('renders ticket information and estimated time', () => { 
     render(<CustomerHalf ticket="15" estimatedTime={30} />);
 
     // Check if the ticket and estimated waiting time are displayed
