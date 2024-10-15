@@ -96,7 +96,7 @@ function ServiceRoutes() {
         try {
           const serviceName = req.body.service.toLowerCase();
           const serviceDetails = await this.serviceDAO.getServiceDetails(serviceName);
-
+          
           if (serviceDetails === undefined) {
             const err = { errCode: 400, errMessage: "Service not found" };
             throw err;
