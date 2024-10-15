@@ -4,7 +4,6 @@ import ManagerHalf from './ManagerHalf';
 import Board from './Board';
 import CounterHalf from './CounterHalf';
 import { useLocation } from 'react-router-dom';
-import { useState } from 'react';
 
 const Main = (props) => {
   const { role } = props; 
