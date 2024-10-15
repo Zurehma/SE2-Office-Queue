@@ -4,8 +4,7 @@ import backgroundImage from '../assets/backgroundCustomer.jpg';
 import '../styles.css'
 
 const CustomerHalf = (props) => {
-  console.log(props.ticket.ticket);
-  console.log(props.ticket.estimatedWaitTime);
+
   
   
   return (
@@ -28,9 +27,7 @@ const CustomerHalf = (props) => {
   );
 };
 
-const CustomerHalfContainer = (props) => {
-  console.log('ffffffffffffff');
-  
+const CustomerHalfContainer = (props) => {  
   const ticket = props.ticketInfo.ticket;
   const time = props.ticketInfo.estimatedWaitTime;
 

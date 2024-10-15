@@ -10,7 +10,6 @@ export function Home(props){
     API.getTicketByService(serviceType)
       .then((ticket) => {
         //here we should navigate to the correct page by passing the ticket as a prop
-        console.log(ticket);
         navigate('/main', {state: {ticket: ticket}});
       })
       .catch((err) => { 

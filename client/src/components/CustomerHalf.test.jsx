@@ -1,39 +1,61 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import CustomerHalf from './CustomerHalf'; // Adjust the path as necessary
-import '@testing-library/jest-dom';
-
-// Mocking the QRCode component from 'react-qr-code'
-jest.mock('react-qr-code', () => () => <div data-testid="qr-code">Mock QR Code</div>);
+import '@testing-library/jest-dom'; // Import this line
+import CustomerHalf from './CustomerHalf'; // Adjust the import path as necessary
 
 describe('CustomerHalf Component', () => {
-  test('renders ticket information and estimated time', () => { 
-    render(<CustomerHalf ticket="15" estimatedTime={30} />);
+  test('renders ticket number and estimated wait time', () => {
+    const ticketInfo = {
+      ticket: '12345',
+      estimatedWaitTime: 10,
+    };
 
-    // Check if the ticket and estimated waiting time are displayed
-    expect(screen.getByText(/Your Ticket: 15/i)).toBeInTheDocument();
-    expect(screen.getByText(/Estimated waiting time: 30 minutes/i)).toBeInTheDocument();
+    render(<CustomerHalf ticket={ticketInfo} error={null} setError={() => {}} />);
+
+    expect(screen.getByText(/your ticket/i)).toBeInTheDocument();
+    expect(screen.getByText(/12345/i)).toBeInTheDocument();
+    expect(screen.getByText(/estimated waiting time: 10 minutes/i)).toBeInTheDocument();
   });
 
-  test('renders QR code if ticket number is present', () => {
-    render(<CustomerHalf ticket="15" estimatedTime={30} />);
+  test('displays "No ticket available" when no ticket is provided', () => {
+    const ticketInfo = {
+      ticket: null,
+      estimatedWaitTime: 10,
+    };
 
-    // Check if the QR code is rendered using the mocked QR code
-    expect(screen.getByTestId('qr-code')).toBeInTheDocument();
+    render(<CustomerHalf ticket={ticketInfo} error={null} setError={() => {}} />);
+
+    expect(screen.getByText(/no ticket available to generate qr code/i)).toBeInTheDocument();
   });
 
-  test('displays error message when no ticket is provided', () => {
-    render(<CustomerHalf ticket={null} estimatedTime={null} />);
+  test('shows an error message when there is an error', () => {
+    const errorMessage = "An error occurred!";
+    
+    render(<CustomerHalf ticket={{ ticket: null, estimatedWaitTime: 10 }} error={errorMessage} setError={() => {}} />);
 
-    // Check if the error message is displayed
-    expect(screen.getByText(/No ticket available to generate QR code./i)).toBeInTheDocument();
+    expect(screen.getByText(errorMessage)).toBeInTheDocument();
   });
 
-  test('applies red text when waiting time is over 15 minutes', () => {
-    render(<CustomerHalf ticket="15" estimatedTime={20} />);
+  test('changes color of estimated wait time based on value', () => {
+    const ticketInfo = {
+      ticket: '12345',
+      estimatedWaitTime: 20,
+    };
 
-    // Check if the waiting time text is red
-    const waitingTime = screen.getByText(/Estimated waiting time: 20 minutes/i);
-    expect(waitingTime).toHaveClass('text-danger'); // Assumes red text is applied with 'text-danger' class
+    render(<CustomerHalf ticket={ticketInfo} error={null} setError={() => {}} />);
+
+    const waitTimeElement = screen.getByText(/estimated waiting time: 20 minutes/i);
+    expect(waitTimeElement).toHaveClass('text-danger'); // Assuming you are using Bootstrap or a similar CSS framework
+  });
+
+  test('renders QR code when a ticket is available', () => {
+    const ticketInfo = {
+      ticket: '12345',
+      estimatedWaitTime: 10,
+    };
+
+    render(<CustomerHalf ticket={ticketInfo} error={null} setError={() => {}} />);
+
+    expect(screen.getByRole('img')).toBeInTheDocument(); // Check if the QRCode is rendered
   });
 });
