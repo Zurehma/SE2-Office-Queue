@@ -2,15 +2,32 @@ import React, { useState, useEffect } from 'react';
 import API from '../../Api.js';
 import backgroundImage from '../assets/backgroundCustomer.jpg'; 
 import '../styles.css'; 
-import Board from './Board'; 
 
 
 const CounterHalf = (props) => {
+  // const [currentCustomer, setCurrentCustomer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  // console.log(props.user.id+1);
+  // const {user} = props
+  
+
   const fetchCustomerData = async () => {
     try {
-      const data = await API.getNextTicket(2);
+      //....
+      const userInfo = await API.getUserInfo();
+      // console.log(userInfo);
+      // Check if manager1 exists, otherwise check manager2
+      let number = null;
+      if (userInfo.username == 'manager1') {
+        number = 2;  // Extract the number from manager1
+      } else if (userInfo.username == 'manager2') {
+        number = 3; // Extract the number from manager2
+      }  
+      // console.log(user);
+      //....
+
+      const data = await API.getNextTicket(number);
       props.setCurrentCustomer(data);
       setError('');
     } catch (error) {
@@ -54,10 +71,10 @@ const CounterHalf = (props) => {
       />
       <div className="container vh-100 d-flex align-items-center justify-content-center">
         <div className="row w-100">
-          <div className="col d-flex flex-column justify-content-center align-items-center">
+          <div className="col-md-6 d-flex flex-column justify-content-center align-items-center">
             <div className="info-container text-center" style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)', padding: '20px', borderRadius: '10px' }}>
               <h2 style={{ color: 'white', fontWeight: 'bold', fontSize: '3rem' }}>
-                Ticket in Service: {props.currentCustomer?.ticket ? props.currentCustomer.ticket : 'No customer in service'}
+              Ticket in Service: {props.currentCustomer?.ticket ? props.currentCustomer.ticket : 'No customer in service'}
               </h2>
               <button
                 className="btn btn-primary"
@@ -66,7 +83,7 @@ const CounterHalf = (props) => {
               >
                 Next Customer
               </button>
-            </div>
+            </div>  
           </div>
         </div>
       </div>
