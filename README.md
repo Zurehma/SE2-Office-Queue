@@ -106,6 +106,19 @@ All of the fields of the tables are reported exactly as they have been defined u
 - Access Constraints: _None_
 - Additional Constraints: _None_
 
+#### GET `api/service/manager`
+
+- Request Parameters: _None_
+- Request Body: _None_
+- Response Body: An array of **Service** object with the following parameters:
+  - `id`: an integer that represent the ID of the service.
+  - `name`: a string that represent the name of the service.
+  - `code`: a string that represent the code of the service.
+  - `averageTime`: an integer that represent the average service time (in minute).
+  - Example: `[{ id: 1, name: "Public Service", averageTime: 10, code: "PS" }, ...]`
+- Access Constraints: Can only be called by a logged in user whose role is Manager
+- Additional Constraints: _None_
+
 #### DELETE `api/service/resetQueues`
 
 - Request Parameters: _None_
