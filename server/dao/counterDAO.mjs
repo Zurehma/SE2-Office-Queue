@@ -13,8 +13,8 @@ const mapRowsToService = (rows) => {
 };
 
 /**
- *
- * @returns
+ * Get all the counter ids in the database
+ * @returns {Promise<Number[]>} A promise that resolves to an array of integer
  */
 const getCounters = () => {
   return new Promise((resolve, reject) => {
