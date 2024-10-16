@@ -22,7 +22,7 @@ const resetQueues = async () => {
 // Function to save service-to-counter relationships to the database
 const saveServicesForCounters = async (counterServices) => {
   try {
-    const response = await fetch('http://localhost:3001/api/service/saveCounterServices', {
+    const response = await fetch('http://localhost:3001/api/counter/configuration', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -36,6 +36,27 @@ const saveServicesForCounters = async (counterServices) => {
     }
 
     return 'Counter services saved successfully!';
+  } catch (error) {
+    return `Error: ${error.message}`;
+  }
+};
+
+// Function to delete the counter configuration
+const deleteCounterConfiguration = async () => {
+  try {
+    const response = await fetch('http://localhost:3001/api/counter/configuration', {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      if (response.status === 400) {
+        throw new Error('No configuration available'); // Specific error for 400 status
+      }
+      throw new Error('Failed to delete configuration');
+    }
+
+    return 'Configuration deleted successfully!';
   } catch (error) {
     return `Error: ${error.message}`;
   }
@@ -98,7 +119,24 @@ const ManagerHalfContainer = () => {
   };
 
   const handleConfigureClick = async () => {
-    const resultMessage = await saveServicesForCounters(counterServices);
+    // Format the data for saving
+    const formattedData = Object.entries(counterServices).flatMap(([accounter, services]) => 
+      services.map(serviceId => ({
+        accounterId: accounter === 'accounter1' ? 2 : 3, // IDs for Accounter 1 and Accounter 2
+        serviceId
+      }))
+    );
+
+    const resultMessage = await saveServicesForCounters(formattedData);
+    setMessage(resultMessage);
+
+    setTimeout(() => {
+      setMessage('');
+    }, 5000);
+  };
+
+  const handleDeleteConfigurationClick = async () => {
+    const resultMessage = await deleteCounterConfiguration();
     setMessage(resultMessage);
 
     setTimeout(() => {
@@ -179,10 +217,26 @@ const ManagerHalfContainer = () => {
             backgroundColor: '#28a745', 
             color: '#fff',
             border: 'none',
-            borderRadius: '5px'
+            borderRadius: '5px',
+            marginRight: '10px'
           }}
         >
           Save Configuration
+        </button>
+
+        <button 
+          onClick={handleDeleteConfigurationClick} 
+          style={{
+            padding: '10px 20px', 
+            fontSize: '16px', 
+            cursor: 'pointer', 
+            backgroundColor: '#dc3545', 
+            color: '#fff',
+            border: 'none',
+            borderRadius: '5px'
+          }}
+        >
+          Delete Configuration
         </button>
       </div>
     </div>
