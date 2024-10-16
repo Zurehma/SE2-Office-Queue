@@ -163,7 +163,7 @@ const ManagerHalfContainer = () => {
 
       {/* Accounter 1 */}
       <div style={{ marginBottom: '20px' }}>
-        <h3>Accounter 1 (ID: 2)</h3>
+        <h3>Counter 1</h3>
         {services.map((service) => (
           <label key={service.id} style={{ display: 'block', marginBottom: '10px' }}>
             <input
@@ -178,7 +178,7 @@ const ManagerHalfContainer = () => {
 
       {/* Accounter 2 */}
       <div style={{ marginBottom: '20px' }}>
-        <h3>Accounter 2 (ID: 3)</h3>
+        <h3>Counter 2</h3>
         {services.map((service) => (
           <label key={service.id} style={{ display: 'block', marginBottom: '10px' }}>
             <input
