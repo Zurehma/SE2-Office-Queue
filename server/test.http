@@ -18,8 +18,8 @@ POST http://localhost:3001/api/sessions/login
 Content-Type: application/json
 
 {
-    "username":"admin",
-    "password":"admin@123"
+    "username":"manager1",
+    "password":"manager@123"
 }   
 
 ### Check current user
@@ -50,6 +50,14 @@ Content-Type: application/json
 
 {
     "service":"public service"
+}
+
+### Call next customer
+POST http://localhost:3001/api/service/ticket/next HTTP/1.1
+Content-Type: application/json
+
+{
+    "date": "2024-03-19"
 }
 
 ### Clear queues
