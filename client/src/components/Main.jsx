@@ -16,9 +16,9 @@ const Main = (props) => {
   const renderLeftHalf = () => {
     switch (role) {
       case 'manager':
-        return <CounterHalf user={props.user} currentCustomer={currentCustomer} setCurrentCustomer={setCurrentCustomer} />;
+        return <ManagerHalf />;
       case 'admin':
-        return <ManagerHalf currentCustomer={currentCustomer} setCurrentCustomer={setCurrentCustomer}/>;
+        return <CounterHalf />;
       default:
         return <CustomerHalf ticket = {ticket} currentCustomer={currentCustomer} setCurrentCustomer={setCurrentCustomer}/>;
     }
