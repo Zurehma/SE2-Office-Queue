@@ -9,12 +9,12 @@ import Service from "../models/service.mjs";
  * @returns
  */
 const mapRowsToService = (rows) => {
-  return rows.map((row) => new Service(row.name, row.code, row.averageTime));
+  return rows.map((row) => new Service(row.id, row.name, row.code, row.averageTime));
 };
 
 /**
- *
- * @returns
+ * Get all the services in the database
+ * @returns {Promise<Service[]>} A promise that resolves to an array of **Service** object
  */
 const getServices = () => {
   return new Promise((resolve, reject) => {
@@ -31,42 +31,83 @@ const getServices = () => {
 };
 
 /**
- * 
- * @param {*} counterID 
- * @returns 
+ * Get the service in the database represented by the given service code
+ * @param {String} serviceCode
+ * @returns {Promise<Service>} A promise that resolves to a **Service** object
  */
-const getServicesPerCounter = (counterID) => {
+const getServiceByCode = (serviceCode) => {
   return new Promise((resolve, reject) => {
-    const query =
-      "SELECT name, averageTime, code FROM services s, servicesPerCounter sc WHERE s.serviceId == sc.serviceId AND sc.counterId = ?";
+    const query = "SELECT * FROM services WHERE code = ?";
 
-    db.all(query, [counterID], (err, rows) => {
+    db.get(query, [serviceCode], (err, row) => {
       if (err) {
         reject(err);
+      } else if (row == undefined) {
+        resolve(undefined);
       } else {
-        resolve(mapRowsToService(rows));
+        resolve(mapRowsToService([row])[0]);
       }
     });
   });
 };
 
-const getServiceCode = (serviceName) =>{
+/**
+ * Add a new served customer to the database with the provided information
+ * @param {Number} counterID
+ * @param {Number} serviceID
+ * @param {String} date
+ * @returns {Promise<Number>} A promise that resolves to an integer that represent the number of lines changed in the database
+ */
+const addServedCustomer = (counterID, serviceID, date) => {
   return new Promise((resolve, reject) => {
-    const query = "SELECT code FROM services WHERE LOWER(name) = ?";
-    db.get(query, [serviceName], (err, row) => {
+    const query = "INSERT INTO served (counterId, serviceId, date) VALUES (?, ?, ?)";
+
+    db.run(query, [counterID, serviceID, date], function (err) {
       if (err) {
         reject(err);
       } else {
-        resolve(row.code);
+        resolve(this.changes);
       }
     });
   });
-}
+};
+
+
+const getServiceDetails = (serviceName) => {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT * FROM services WHERE LOWER(name) = ?";
+    db.get(query, [serviceName], (err, row) => {
+      if (err) {
+        reject(err);
+      } else if (!row) {
+        resolve(undefined);
+      } else {
+        resolve(mapRowsToService([row])[0]);
+      }
+    });
+  });
+};
+
+//for each counter, get the services that are available
+const getServicesForAllCounters = () => {
+  return new Promise((resolve, reject) => {
+    const query = "SELECT * FROM servicesPerCounter";
+    db.all(query, [], (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(rows);
+      }
+    });
+  });
+};
 
 function ServiceDAO() {
   this.getServices = getServices;
-  this.getServicesPerCounter = getServicesPerCounter;
-  this.getServiceCode = getServiceCode;
+  this.getServiceByCode = getServiceByCode;
+  this.addServedCustomer = addServedCustomer;
+  this.getServiceDetails = getServiceDetails;
+  this.getServicesForAllCounters = getServicesForAllCounters;
 }
 
 export default ServiceDAO;

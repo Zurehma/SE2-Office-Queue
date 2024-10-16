@@ -25,7 +25,7 @@ export default function UserDAO() {
     //get user by ID
     this.getUserById = (id) => {
         return new Promise((resolve, reject) => {
-            const query = 'SELECT * FROM users WHERE userID=?';
+            const query = 'SELECT * FROM users WHERE id=?';
             db.get(query, [id], (err, row) => {
                 if (err) {
                     reject(err);
@@ -33,7 +33,7 @@ export default function UserDAO() {
                 if (row === undefined) {
                     resolve({error: 'User not found.'});
                 } else {
-                    resolve(new User(row.userID, row.name, row.surname, row.role, row.username));
+                    resolve(new User(row.id, row.name, row.surname, row.role, row.username));
                 }
             });
         });
@@ -55,7 +55,7 @@ export default function UserDAO() {
                         if (!crypto.timingSafeEqual(Buffer.from(row.password, 'hex'), hashedPassword))
                             resolve(false);
                         else
-                            resolve(new User(row.userID, row.name, row.surname, row.role, row.username));
+                            resolve(new User(row.id, row.name, row.surname, row.role, row.username));
                     });
                 }
             });
