@@ -72,18 +72,6 @@ const addServedCustomer = (counterID, serviceID, date) => {
   });
 };
 
-const getServiceCode = (serviceName) => {
-  return new Promise((resolve, reject) => {
-    const query = "SELECT code FROM services WHERE LOWER(name) = ?";
-    db.get(query, [serviceName], (err, row) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(row.code);
-      }
-    });
-  });
-};
 
 const getServiceDetails = (serviceName) => {
   return new Promise((resolve, reject) => {
@@ -118,7 +106,6 @@ function ServiceDAO() {
   this.getServices = getServices;
   this.getServiceByCode = getServiceByCode;
   this.addServedCustomer = addServedCustomer;
-  this.getServiceCode = getServiceCode;
   this.getServiceDetails = getServiceDetails;
   this.getServicesForAllCounters = getServicesForAllCounters;
 }

@@ -92,54 +92,10 @@ describe("POST /ticket" , () => {
 
     });
 
-/* describe("DELETE /resetQueues" , () => {
-
-    let mockQueueManager;
-
-    beforeEach(() => {
-        // Create a new instance of QueueManager and mock its reset method
-        mockQueueManager = new QueueManager();
-        jest.spyOn(mockQueueManager, 'reset');
-
-        // Replace the real queueManager with the mock in the ServiceRoutes
-        ServiceRoutes.prototype.queueManager = mockQueueManager;
-
-        // Ensure isLoggedIn is mocked properly
-        Authenticator.isLoggedIn = jest.fn((req, res, next) => next());
-    });
 
 
-    afterEach(() => {
-        jest.clearAllMocks();
-    });
 
 
-    test ('It should return 200 status code and reset the queues', async () => {
-           
-        const response = await request(app)
-            .delete(baseURL + '/resetQueues');
-
-        // Check that the queue manager's reset method was called
-        //expect(mockQueueManager.reset).toHaveBeenCalled();
-
-        // Verify the response
-        expect(response.statusCode).toBe(200);
-        expect(response.body).toEqual({ message: "Queues cleared" });
-    });
-
-    test('It should return 401 unauthorized status code if the user is not logged in', async () => {
-
-        // Mock isLoggedIn to simulate an unauthorized user
-        Utility.isLoggedIn = jest.fn((req, res, next) => res.status(401).send());
-
-        const response = await request(app)
-            .delete(baseURL + '/resetQueues');
-
-        // Check the response for unauthorized access
-        expect(response.statusCode).toBe(401);
-    });
-
-}); */
 
 
 

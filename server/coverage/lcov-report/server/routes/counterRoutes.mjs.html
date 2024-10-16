@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for server/routes/serviceRoutes.mjs</title>
+    <title>Code coverage report for server/routes/counterRoutes.mjs</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">server/routes</a> serviceRoutes.mjs</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">server/routes</a> counterRoutes.mjs</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">71.24% </span>
+                <span class="strong">49.01% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>109/153</span>
+                <span class='fraction'>50/102</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">71.24% </span>
+                <span class="strong">49.01% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>109/153</span>
+                <span class='fraction'>50/102</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -165,79 +165,7 @@
 <a name='L100'></a><a href='#L100'>100</a>
 <a name='L101'></a><a href='#L101'>101</a>
 <a name='L102'></a><a href='#L102'>102</a>
-<a name='L103'></a><a href='#L103'>103</a>
-<a name='L104'></a><a href='#L104'>104</a>
-<a name='L105'></a><a href='#L105'>105</a>
-<a name='L106'></a><a href='#L106'>106</a>
-<a name='L107'></a><a href='#L107'>107</a>
-<a name='L108'></a><a href='#L108'>108</a>
-<a name='L109'></a><a href='#L109'>109</a>
-<a name='L110'></a><a href='#L110'>110</a>
-<a name='L111'></a><a href='#L111'>111</a>
-<a name='L112'></a><a href='#L112'>112</a>
-<a name='L113'></a><a href='#L113'>113</a>
-<a name='L114'></a><a href='#L114'>114</a>
-<a name='L115'></a><a href='#L115'>115</a>
-<a name='L116'></a><a href='#L116'>116</a>
-<a name='L117'></a><a href='#L117'>117</a>
-<a name='L118'></a><a href='#L118'>118</a>
-<a name='L119'></a><a href='#L119'>119</a>
-<a name='L120'></a><a href='#L120'>120</a>
-<a name='L121'></a><a href='#L121'>121</a>
-<a name='L122'></a><a href='#L122'>122</a>
-<a name='L123'></a><a href='#L123'>123</a>
-<a name='L124'></a><a href='#L124'>124</a>
-<a name='L125'></a><a href='#L125'>125</a>
-<a name='L126'></a><a href='#L126'>126</a>
-<a name='L127'></a><a href='#L127'>127</a>
-<a name='L128'></a><a href='#L128'>128</a>
-<a name='L129'></a><a href='#L129'>129</a>
-<a name='L130'></a><a href='#L130'>130</a>
-<a name='L131'></a><a href='#L131'>131</a>
-<a name='L132'></a><a href='#L132'>132</a>
-<a name='L133'></a><a href='#L133'>133</a>
-<a name='L134'></a><a href='#L134'>134</a>
-<a name='L135'></a><a href='#L135'>135</a>
-<a name='L136'></a><a href='#L136'>136</a>
-<a name='L137'></a><a href='#L137'>137</a>
-<a name='L138'></a><a href='#L138'>138</a>
-<a name='L139'></a><a href='#L139'>139</a>
-<a name='L140'></a><a href='#L140'>140</a>
-<a name='L141'></a><a href='#L141'>141</a>
-<a name='L142'></a><a href='#L142'>142</a>
-<a name='L143'></a><a href='#L143'>143</a>
-<a name='L144'></a><a href='#L144'>144</a>
-<a name='L145'></a><a href='#L145'>145</a>
-<a name='L146'></a><a href='#L146'>146</a>
-<a name='L147'></a><a href='#L147'>147</a>
-<a name='L148'></a><a href='#L148'>148</a>
-<a name='L149'></a><a href='#L149'>149</a>
-<a name='L150'></a><a href='#L150'>150</a>
-<a name='L151'></a><a href='#L151'>151</a>
-<a name='L152'></a><a href='#L152'>152</a>
-<a name='L153'></a><a href='#L153'>153</a>
-<a name='L154'></a><a href='#L154'>154</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L103'></a><a href='#L103'>103</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -269,6 +197,9 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -315,53 +246,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
@@ -369,159 +254,121 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Module for the service routes
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">// Module for the counter routes
 &nbsp;
 import { Router } from "express";
 import { check, body, param, query } from "express-validator";
-import dayjs from "dayjs";
 &nbsp;
 import Utility from "../utilities.mjs";
 &nbsp;
 import ServiceDAO from "../dao/serviceDAO.mjs";
-import QueueManager from "../models/queue.mjs";
 import CounterDAO from "../dao/counterDAO.mjs";
+import UserDAO from "../dao/userDAO.mjs";
 &nbsp;
-const calculateEstimatedWaitTime = async (queueLength, serviceDetails, counterServicesMapped) =&gt; {
-  let sum = 0;
-  Object.keys(counterServicesMapped).forEach((counterId) =&gt; {
-    const services = counterServicesMapped[counterId];
-    const canServe = services.includes(serviceDetails.id);
-    if (canServe) {
-      const k_i = services.length;
-      sum += 1 / k_i;
-    }
-  });
-&nbsp;
-  const estimatedWaitTime = serviceDetails.averageTime * (queueLength / sum + 1 / 2);
-  return estimatedWaitTime;
-};
-&nbsp;
-/**
- *
- */
-function ServiceRoutes() {
+function CounterRoutes() {
   this.router = Router();
 &nbsp;
-  this.queueManager = new QueueManager();
+  this.userDAO = new UserDAO();
   this.serviceDAO = new ServiceDAO();
   this.counterDAO = new CounterDAO();
-&nbsp;
-  this.queueManager.init();
 &nbsp;
   this.getRouter = () =&gt; this.router;
 &nbsp;
   this.initRoutes = () =&gt; {
     /**
-     * Route to get the list of services available
+     * Route to get the list of counter's id
      */
-    this.router.get("", async (req, res, next) =&gt; {
+    this.router.get("", Utility.isLoggedIn, async (req, res, next) =&gt; {
 <span class="cstat-no" title="statement not covered" >      try {</span>
-<span class="cstat-no" title="statement not covered" >        const services = await this.serviceDAO.getServices();</span>
+<span class="cstat-no" title="statement not covered" >        const counters = await this.counterDAO.getCounters();</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >        return res.status(200).json(services);</span>
+<span class="cstat-no" title="statement not covered" >        return res.status(200).json(counters);</span>
 <span class="cstat-no" title="statement not covered" >      } catch (err) {</span>
 <span class="cstat-no" title="statement not covered" >        return next(err);</span>
 <span class="cstat-no" title="statement not covered" >      }</span>
     });
 &nbsp;
     /**
-     * Route to call the next customer in the queue of one of the services provided by the counterID provided in the body of the request
+     * Route to add a new counter-service configuration
      */
     this.router.post(
-      "/ticket/next",
-      Utility.isLoggedInAndManager,
-      body("date").isISO8601({ strict: true }),
+      "/configuration",
+      Utility.isLoggedInAndAdmin,
+      body().isArray(),
+      body("*.counterID").isInt({ min: 0 }),
+      body("*.serviceCodes").isArray(),
+      body("*.serviceCodes.*").isString().notEmpty(),
       Utility.validateRequest,
       async (req, res, next) =&gt; {
 <span class="cstat-no" title="statement not covered" >        try {</span>
-<span class="cstat-no" title="statement not covered" >          if (dayjs().isBefore(req.body.date)) {</span>
-<span class="cstat-no" title="statement not covered" >            const err = { errCode: 400, errMessage: "Invalid date!" };</span>
-<span class="cstat-no" title="statement not covered" >            throw err;</span>
+<span class="cstat-no" title="statement not covered" >          const configurations = req.body;</span>
+<span class="cstat-no" title="statement not covered" >          const err = { errCode: 404, errMessage: "Counter id or service code not found!" };</span>
+<span class="cstat-no" title="statement not covered" >          let services = {};</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >          for (let configuration of configurations) {</span>
+<span class="cstat-no" title="statement not covered" >            const user = await this.userDAO.getUserById(configuration.counterID);</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >            if (user.error || user.role !== "manager") {</span>
+<span class="cstat-no" title="statement not covered" >              throw err;</span>
+<span class="cstat-no" title="statement not covered" >            }</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >            for (let serviceCode of configuration.serviceCodes) {</span>
+<span class="cstat-no" title="statement not covered" >              let service = await this.serviceDAO.getServiceByCode(serviceCode);</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >              if (service === undefined) {</span>
+<span class="cstat-no" title="statement not covered" >                throw err;</span>
+<span class="cstat-no" title="statement not covered" >              }</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >              if (!services.hasOwnProperty(serviceCode)) {</span>
+<span class="cstat-no" title="statement not covered" >                services[serviceCode] = service;</span>
+<span class="cstat-no" title="statement not covered" >              }</span>
+<span class="cstat-no" title="statement not covered" >            }</span>
 <span class="cstat-no" title="statement not covered" >          }</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >          let services = await this.counterDAO.getConfiguration(req.user.id);</span>
+<span class="cstat-no" title="statement not covered" >          await this.counterDAO.deleteConfiguration();</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >          if (services.length === 0) {</span>
-<span class="cstat-no" title="statement not covered" >            const err = { errCode: 404, errMessage: "The counter does not exist!" };</span>
-<span class="cstat-no" title="statement not covered" >            throw err;</span>
+<span class="cstat-no" title="statement not covered" >          for (let configuration of configurations) {</span>
+<span class="cstat-no" title="statement not covered" >            for (let serviceCode of configuration.serviceCodes) {</span>
+<span class="cstat-no" title="statement not covered" >              await this.counterDAO.addConfiguration(configuration.counterID, services[serviceCode].id);</span>
+<span class="cstat-no" title="statement not covered" >            }</span>
 <span class="cstat-no" title="statement not covered" >          }</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >          const maxQueueLength = Math.max(</span>
-<span class="cstat-no" title="statement not covered" >            ...[...services].map((service) =&gt; this.queueManager.length(service.code))</span>
-<span class="cstat-no" title="statement not covered" >          );</span>
-<span class="cstat-no" title="statement not covered" >          services = [...services].filter(</span>
-<span class="cstat-no" title="statement not covered" >            (service) =&gt; this.queueManager.length(service.code) === maxQueueLength</span>
-<span class="cstat-no" title="statement not covered" >          );</span>
-<span class="cstat-no" title="statement not covered" >          const minAverageTime = Math.min(...[...services].map((service) =&gt; service.averageTime));</span>
-<span class="cstat-no" title="statement not covered" >          const service = services.find((service) =&gt; service.averageTime === minAverageTime);</span>
-<span class="cstat-no" title="statement not covered" >          const ticket = this.queueManager.dequeue(service.code);</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >          if (ticket === undefined) {</span>
-<span class="cstat-no" title="statement not covered" >            const err = { errCode: 400, errMessage: "The queues are empty!" };</span>
-<span class="cstat-no" title="statement not covered" >            throw err;</span>
-<span class="cstat-no" title="statement not covered" >          }</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >          await this.serviceDAO.addServedCustomer(req.user.id, service.id, req.body.date);</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >          return res.status(200).json({ serviceCode: service.code, ticket: ticket });</span>
+<span class="cstat-no" title="statement not covered" >          return res.status(200).end();</span>
 <span class="cstat-no" title="statement not covered" >        } catch (err) {</span>
 <span class="cstat-no" title="statement not covered" >          return next(err);</span>
 <span class="cstat-no" title="statement not covered" >        }</span>
 <span class="cstat-no" title="statement not covered" >      }</span>
     );
 &nbsp;
-    /* 
-      Route for user to get new ticket
-    */
-    this.router.post(
-      "/ticket",
-      [body("service").isString().notEmpty(), Utility.validateRequest],
-      async (req, res, next) =&gt; {
-        try {
-          const serviceName = req.body.service.toLowerCase();
-          const serviceDetails = await this.serviceDAO.getServiceDetails(serviceName);
-          
-          if (serviceDetails === undefined) {
-            const err = { errCode: 400, errMessage: "Service not found" };
-            throw err;
-          }
-&nbsp;
-          const serviceCode = serviceDetails.code;
-          const queueLength = this.queueManager.length(serviceCode);
-&nbsp;
-          const allServices = await this.serviceDAO.getServicesForAllCounters();
-          const counterServicesMapped = {};
-          allServices.forEach((service) =&gt; {
-            const { counterId, serviceId } = service;
-            if (counterServicesMapped[counterId] === undefined) {
-              counterServicesMapped[counterId] = [];
-            }
-            counterServicesMapped[counterId].push(serviceId);
-          });
-&nbsp;
-          const ticket = this.queueManager.enqueue(serviceCode);
-          const estimatedWaitTime = await calculateEstimatedWaitTime(
-            queueLength,
-            serviceDetails,
-            counterServicesMapped
-          );
-&nbsp;
-          return res.status(200).json({ ticket: ticket, estimatedWaitTime: estimatedWaitTime });
-        } catch (err) {
-          return next(err);
-        }
-      }
-    );
-&nbsp;
-    //Route for manager or admin to clear queues
-    this.router.delete("/resetQueues", Utility.isLoggedIn, async (req, res) =&gt; {
-<span class="cstat-no" title="statement not covered" >      this.queueManager.reset();</span>
-<span class="cstat-no" title="statement not covered" >      return res.status(200).json({ message: "Queues cleared" });</span>
+    /**
+     * Route to reset the counter-service configuration
+     */
+    this.router.delete("/configuration", Utility.isLoggedInAndAdmin, async (req, res, next) =&gt; {
+<span class="cstat-no" title="statement not covered" >      try {</span>
+<span class="cstat-no" title="statement not covered" >        await this.counterDAO.deleteConfiguration();</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >        return res.status(200).end();</span>
+<span class="cstat-no" title="statement not covered" >      } catch (err) {</span>
+<span class="cstat-no" title="statement not covered" >        return next(err);</span>
+<span class="cstat-no" title="statement not covered" >      }</span>
     });
   };
 }
 &nbsp;
-export default ServiceRoutes;
+export default CounterRoutes;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
