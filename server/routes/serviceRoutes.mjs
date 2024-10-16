@@ -41,6 +41,19 @@ function ServiceRoutes() {
 
   this.initRoutes = () => {
     /**
+     * Route to get the list of services available
+     */
+    this.router.get("", async (req, res, next) => {
+      try {
+        const services = await this.serviceDAO.getServices();
+
+        return res.status(200).json(services);
+      } catch (err) {
+        return next(err);
+      }
+    });
+
+    /**
      * Route to call the next customer in the queue of one of the services provided by the counterID provided in the body of the request
      */
     this.router.post(
@@ -79,7 +92,7 @@ function ServiceRoutes() {
 
           await this.serviceDAO.addServedCustomer(req.user.id, service.id, req.body.date);
 
-          return res.status(200).json({ serviceID: service.id, ticket: ticket });
+          return res.status(200).json({ serviceCode: service.code, ticket: ticket });
         } catch (err) {
           return next(err);
         }
@@ -128,32 +141,6 @@ function ServiceRoutes() {
         }
       }
     );
-
-    /**
-     * Route to get the list of services available
-     */
-    this.router.get("", async (req, res, next) => {
-      try {
-        const services = await this.serviceDAO.getServices();
-
-        return res.status(200).json(services);
-      } catch (err) {
-        return next(err);
-      }
-    });
-
-    /**
-     * Route to get the list of services of the currently logged manager
-     */
-    this.router.get("/manager", async (req, res, next) => {
-      try {
-        const services = await this.serviceDAO.getServicesPerCounter(req.user.id);
-
-        return res.status.json(services);
-      } catch (err) {
-        return next(err);
-      }
-    });
 
     //Route for manager or admin to clear queues
     this.router.delete("/resetQueues", Utility.isLoggedIn, async (req, res) => {

@@ -65,6 +65,19 @@ All of the fields of the tables are reported exactly as they have been defined u
 
 ### Service APIs
 
+#### GET `api/service`
+
+- Request Parameters: _None_
+- Request Body: _None_
+- Response Body: An array of **Service** object with the following parameters:
+  - `id`: an integer that represent the ID of the service.
+  - `name`: a string that represent the name of the service.
+  - `code`: a string that represent the code of the service.
+  - `averageTime`: an integer that represent the average service time (in minute).
+  - Example: `[{ id: 1, name: "Public Service", averageTime: 10, code: "PS" }, ...]`
+- Access Constraints: _None_
+- Additional Constraints: _None_
+
 #### POST `api/service/ticket`
 
 - Request Paramaters: _None_
@@ -84,40 +97,14 @@ All of the fields of the tables are reported exactly as they have been defined u
 - Request Body: An object with the following parameters:
   - `date`: a string that represent a date. It must be in the format **YYYY-MM-DD**.
 - Response Body: An object with the following parameters:
-  - `serviceID`: an integer that represent the ID of the service.
-  - `ticket`: a string that represent the next ticket to serve.
+  - `serviceCode`: a string that represents the code of the service.
+  - `ticket`: a string that represents the next ticket to serve.
   - Example: `{ serviceCode: "PS", ticket: "PS1" }`
 - Access Constraints: Can only be called by a logged in user whose role is Manager
 - Additional Constraints:
   - It should return a 400 error if the queues are empty.
   - It should return a 400 error if the `date` is after the current date.
   - It should return a 404 error if the manager does not has any service assigned.
-
-#### GET `api/service`
-
-- Request Parameters: _None_
-- Request Body: _None_
-- Response Body: An array of **Service** object with the following parameters:
-  - `id`: an integer that represent the ID of the service.
-  - `name`: a string that represent the name of the service.
-  - `code`: a string that represent the code of the service.
-  - `averageTime`: an integer that represent the average service time (in minute).
-  - Example: `[{ id: 1, name: "Public Service", averageTime: 10, code: "PS" }, ...]`
-- Access Constraints: _None_
-- Additional Constraints: _None_
-
-#### GET `api/service/manager`
-
-- Request Parameters: _None_
-- Request Body: _None_
-- Response Body: An array of **Service** object with the following parameters:
-  - `id`: an integer that represent the ID of the service.
-  - `name`: a string that represent the name of the service.
-  - `code`: a string that represent the code of the service.
-  - `averageTime`: an integer that represent the average service time (in minute).
-  - Example: `[{ id: 1, name: "Public Service", averageTime: 10, code: "PS" }, ...]`
-- Access Constraints: Can only be called by a logged in user whose role is Manager
-- Additional Constraints: _None_
 
 #### DELETE `api/service/resetQueues`
 
@@ -133,7 +120,7 @@ All of the fields of the tables are reported exactly as they have been defined u
 
 - Request Parameters: _None_
 - Request Body: _None_
-- Response Body: An array of integers that represent all the counter's ids.
+- Response Body: An array of integers that represents all the counter ids.
   - Example: `[1, ...]`
 - Access Constraints: Can only be called by a logged in user whose role is either Admin or Manager
 - Additional Constraints: _None_
@@ -142,11 +129,12 @@ All of the fields of the tables are reported exactly as they have been defined u
 
 - Request Parameters: _None_
 - Request Body: An array of object with the following parameters:
-  - `counterID`: an integer that represent the ID of the counter.
-  - `serviceIDs`: an array of integers that represent all the service's ids.
+  - `counterID`: an integer that represents the ID of the counter.
+  - `serviceCodes`: an array of string that represents the service codes.
 - Response Body: **None**
 - Access Contraints: Can only be called by a logged in user whose role is Admin
-- Additional Contraints: TODO
+- Additional Contraints:
+  - It should return a 404 error if it's wrong either one of service codes or one of counter ids.
 
 #### DELETE `api/counter/configuration`
 
@@ -154,8 +142,7 @@ All of the fields of the tables are reported exactly as they have been defined u
 - Request Body: _None_
 - Response Body: _None_
 - Access Constraints: Can only be called by a logged in user whose role is Admin
-- Additional Constraints:
-  - It should return a 400 error if there is no configuration available.
+- Additional Constraints: _None_
 
 ### User APIs
 
