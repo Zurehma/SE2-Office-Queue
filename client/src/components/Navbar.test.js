@@ -6,7 +6,7 @@ import { MemoryRouter } from 'react-router-dom';
 
 describe('NavigationBar', () => {
   const mockLogout = jest.fn();
-  jest.mocsk('./Auth', () => ({
+  jest.mock('./Auth', () => ({
     LoginButton: () => <button>Mock Login</button>,
     HomeButton: () => <button>Mock Home</button>,
   }));
