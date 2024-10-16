@@ -51,7 +51,7 @@ const deleteCounterConfiguration = async () => {
 
     if (!response.ok) {
       if (response.status === 400) {
-        throw new Error('No configuration available'); // Specific error for 400 status
+        throw new Error('No configuration available'); 
       }
       throw new Error('Failed to delete configuration');
     }
@@ -119,21 +119,32 @@ const ManagerHalfContainer = () => {
   };
 
   const handleConfigureClick = async () => {
-    // Format the data for saving
+    // Map service IDs to their corresponding service codes
+    const serviceCodeMap = {
+      1: "PS", // Public Service
+      2: "MT", // Money Transfer
+      3: "SR", // Shipping and Receiving
+    };
+  
+
     const formattedData = Object.entries(counterServices).flatMap(([accounter, services]) => 
       services.map(serviceId => ({
-        accounterId: accounter === 'accounter1' ? 2 : 3, // IDs for Accounter 1 and Accounter 2
-        serviceId
+        counterID: accounter === 'accounter1' ? 2 : 3, 
+        serviceCodes: [serviceCodeMap[serviceId]]
       }))
     );
-
+  
+    
     const resultMessage = await saveServicesForCounters(formattedData);
     setMessage(resultMessage);
-
+  
     setTimeout(() => {
       setMessage('');
     }, 5000);
   };
+  
+  
+
 
   const handleDeleteConfigurationClick = async () => {
     const resultMessage = await deleteCounterConfiguration();
