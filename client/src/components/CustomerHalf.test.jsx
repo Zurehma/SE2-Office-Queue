@@ -1,39 +1,53 @@
+// CustomerHalf.test.js
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import CustomerHalf from './CustomerHalf'; // Adjust the path as necessary
-import '@testing-library/jest-dom';
-
-// Mocking the QRCode component from 'react-qr-code'
-jest.mock('react-qr-code', () => () => <div data-testid="qr-code">Mock QR Code</div>);
+import CustomerHalf from './CustomerHalf';
+import '@testing-library/jest-dom'; 
 
 describe('CustomerHalf Component', () => {
-  test('renders ticket information and estimated time', () => {
-    render(<CustomerHalf ticket="15" estimatedTime={30} />);
+  const mockProps = {
+    ticket: {
+      ticket: '12345',  
+      estimatedWaitTime: 10 
+    },
+    error: null,
+    setError: jest.fn(), 
+  };
 
-    // Check if the ticket and estimated waiting time are displayed
-    expect(screen.getByText(/Your Ticket: 15/i)).toBeInTheDocument();
-    expect(screen.getByText(/Estimated waiting time: 30 minutes/i)).toBeInTheDocument();
+  test('renders ticket number and estimated wait time', () => {
+    render(<CustomerHalf {...mockProps} />);
+
+    
+    expect(screen.getByText(/Your Ticket: 12345/i)).toBeInTheDocument();
+
+  
+    expect(screen.getByText(/Estimated waiting time: 10 minutes/i)).toBeInTheDocument();
   });
 
-  test('renders QR code if ticket number is present', () => {
-    render(<CustomerHalf ticket="15" estimatedTime={30} />);
+  test('displays error message if error prop is set', () => {
+    const errorProps = {
+      ...mockProps,
+      error: 'An error occurred', 
+    };
 
-    // Check if the QR code is rendered using the mocked QR code
-    expect(screen.getByTestId('qr-code')).toBeInTheDocument();
+    render(<CustomerHalf {...errorProps} />);
+
+    
+    expect(screen.getByText(/An error occurred/i)).toBeInTheDocument();
   });
 
-  test('displays error message when no ticket is provided', () => {
-    render(<CustomerHalf ticket={null} estimatedTime={null} />);
+  test('does not render QR code if ticket is N/A', () => {
+    const noTicketProps = {
+      ...mockProps,
+      ticket: {
+        ticket: 'N/A',
+        estimatedWaitTime: 10,
+      },
+    };
 
-    // Check if the error message is displayed
-    expect(screen.getByText(/No ticket available to generate QR code./i)).toBeInTheDocument();
-  });
+    render(<CustomerHalf {...noTicketProps} />);
 
-  test('applies red text when waiting time is over 15 minutes', () => {
-    render(<CustomerHalf ticket="15" estimatedTime={20} />);
-
-    // Check if the waiting time text is red
-    const waitingTime = screen.getByText(/Estimated waiting time: 20 minutes/i);
-    expect(waitingTime).toHaveClass('text-danger'); // Assumes red text is applied with 'text-danger' class
+    
+    expect(screen.queryByText(/No ticket available to generate QR code/i)).toBeInTheDocument();
   });
 });

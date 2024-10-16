@@ -22,7 +22,7 @@ const resetQueues = async () => {
 // Function to save service-to-counter relationships to the database
 const saveServicesForCounters = async (counterServices) => {
   try {
-    const response = await fetch('http://localhost:3001/api/service/saveCounterServices', {
+    const response = await fetch('http://localhost:3001/api/counter/configuration', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -36,6 +36,27 @@ const saveServicesForCounters = async (counterServices) => {
     }
 
     return 'Counter services saved successfully!';
+  } catch (error) {
+    return `Error: ${error.message}`;
+  }
+};
+
+// Function to delete the counter configuration
+const deleteCounterConfiguration = async () => {
+  try {
+    const response = await fetch('http://localhost:3001/api/counter/configuration', {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      if (response.status === 400) {
+        throw new Error('No configuration available'); 
+      }
+      throw new Error('Failed to delete configuration');
+    }
+
+    return 'Configuration deleted successfully!';
   } catch (error) {
     return `Error: ${error.message}`;
   }
@@ -98,7 +119,35 @@ const ManagerHalfContainer = () => {
   };
 
   const handleConfigureClick = async () => {
-    const resultMessage = await saveServicesForCounters(counterServices);
+    // Map service IDs to their corresponding service codes
+    const serviceCodeMap = {
+      1: "PS", // Public Service
+      2: "MT", // Money Transfer
+      3: "SR", // Shipping and Receiving
+    };
+  
+
+    const formattedData = Object.entries(counterServices).flatMap(([accounter, services]) => 
+      services.map(serviceId => ({
+        counterID: accounter === 'accounter1' ? 2 : 3, 
+        serviceCodes: [serviceCodeMap[serviceId]]
+      }))
+    );
+  
+    
+    const resultMessage = await saveServicesForCounters(formattedData);
+    setMessage(resultMessage);
+  
+    setTimeout(() => {
+      setMessage('');
+    }, 5000);
+  };
+  
+  
+
+
+  const handleDeleteConfigurationClick = async () => {
+    const resultMessage = await deleteCounterConfiguration();
     setMessage(resultMessage);
 
     setTimeout(() => {
@@ -114,7 +163,7 @@ const ManagerHalfContainer = () => {
 
       {/* Accounter 1 */}
       <div style={{ marginBottom: '20px' }}>
-        <h3>Accounter 1 (ID: 2)</h3>
+        <h3>Counter 1</h3>
         {services.map((service) => (
           <label key={service.id} style={{ display: 'block', marginBottom: '10px' }}>
             <input
@@ -129,7 +178,7 @@ const ManagerHalfContainer = () => {
 
       {/* Accounter 2 */}
       <div style={{ marginBottom: '20px' }}>
-        <h3>Accounter 2 (ID: 3)</h3>
+        <h3>Counter 2</h3>
         {services.map((service) => (
           <label key={service.id} style={{ display: 'block', marginBottom: '10px' }}>
             <input
@@ -179,10 +228,26 @@ const ManagerHalfContainer = () => {
             backgroundColor: '#28a745', 
             color: '#fff',
             border: 'none',
-            borderRadius: '5px'
+            borderRadius: '5px',
+            marginRight: '10px'
           }}
         >
           Save Configuration
+        </button>
+
+        <button 
+          onClick={handleDeleteConfigurationClick} 
+          style={{
+            padding: '10px 20px', 
+            fontSize: '16px', 
+            cursor: 'pointer', 
+            backgroundColor: '#dc3545', 
+            color: '#fff',
+            border: 'none',
+            borderRadius: '5px'
+          }}
+        >
+          Delete Configuration
         </button>
       </div>
     </div>

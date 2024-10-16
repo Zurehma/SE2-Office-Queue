@@ -5,28 +5,19 @@ import '../styles.css';
 
 
 const CounterHalf = (props) => {
-  // const [currentCustomer, setCurrentCustomer] = useState(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  // console.log(props.user.id+1);
-  // const {user} = props
-  
 
   const fetchCustomerData = async () => {
     try {
-      //....
-      const userInfo = await API.getUserInfo();
-      // console.log(userInfo);
-      // Check if manager1 exists, otherwise check manager2
+      const userInfo = await API.getUserInfo();    
       let number = null;
       if (userInfo.username == 'manager1') {
         number = 2;  // Extract the number from manager1
       } else if (userInfo.username == 'manager2') {
         number = 3; // Extract the number from manager2
       }  
-      // console.log(user);
-      //....
-
       const data = await API.getNextTicket(number);
       props.setCurrentCustomer(data);
       setError('');
@@ -92,3 +83,4 @@ const CounterHalf = (props) => {
 };
 
 export default CounterHalf;
+
