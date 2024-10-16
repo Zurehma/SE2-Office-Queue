@@ -6,7 +6,7 @@ import '../styles.css';
 
 const CounterHalf = (props) => {
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const fetchCustomerData = async () => {
@@ -33,9 +33,6 @@ const CounterHalf = (props) => {
     await fetchCustomerData();
   };
 
-  useEffect(() => {
-    fetchCustomerData();
-  }, []);
 
   if (loading) {
     return <div style={{ color: 'white' }}>Loading...</div>;
