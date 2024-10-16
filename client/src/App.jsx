@@ -2,21 +2,42 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './App.css'
 
+/**
+ * React imports
+ */
 import React from 'react';
-import { useState,useEffect } from 'react'
+import { useState } from 'react'
 import { Container, Alert } from 'react-bootstrap';
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import { Navigate } from 'react-router-dom';
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
 
+/**
+ * Component imports
+ */
 import API from '../Api';
 import {Home} from './components/Home';
 import { NavigationBar } from './components/Navbar';
 import {LoginForm} from './components/Auth';
 import CustomerHalf from './components/CustomerHalf';
+import ManagerHalf from './components/ManagerHalf';
+import NotFound from './components/NotFound';
+import CounterHalf from './components/CounterHalf';
+import Main from './components/Main';
+
 
 function App() {
-  const [error, setError] = useState(null);
+  /**
+   * the user state is set to null if nobody logged in, otherwise it contains user info
+   */
   const [user, setUser] = useState(null);
+  
+  /**
+   * The error state can be passed to other components, by setting it with the setError callback you areable
+   * to make the Alert display which kind of error was generated 
+   */
+  const [error, setError] = useState(null);
+  /**
+   * loggedIn state is set to True in case the user logged in (maybe useless?-> you could check if user is null)
+   */
   const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
  
@@ -24,8 +45,12 @@ function App() {
    * This function handles the login process.
    */
   const handleLogin = async (credentials) => {
-    const user = await API.logIn(credentials);
-    setUser(user); setLoggedIn(true);
+    await API.logIn(credentials);
+    API.getUserInfo().then((user) => {
+      setUser(user);
+      setLoggedIn(true);
+      navigate('/main');
+    }).catch((err) => setError(err));
   };
 
   /**
@@ -49,22 +74,17 @@ function App() {
         </Alert>
         )}
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home setError={setError} />} />
           <Route path="/login" element={ 
               loggedIn ? <Navigate replace to='/' /> : <LoginForm login={handleLogin}/>}/>
+          {/* <Route path="/customer-service" element={<CustomerHalf errror = {error} setError={setError}/>}/> */}
+          <Route path='main' element={<Main role={user ? user.role : 'customer'} />} />
+          {/* <Route path="/manager" element={<ManagerHalf error = {error} setError={setError}/>}/>
+          <Route path="/counter" element={<CounterHalf error = {error} setError={setError}/>}/> */}
+          <Route path='*' element={<NotFound/>}/>
         </Routes>
       </Container>
-      
-      {/*<img src={backgroundImage} alt="Background Image" style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100vh',
-        objectFit: 'cover',
-        zIndex: -1
-      }} />
-      <CustomerHalf />*/}
+    
     </div>
   );
 }

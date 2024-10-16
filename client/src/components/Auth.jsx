@@ -1,3 +1,4 @@
+import React from 'react';
 import { useState } from 'react';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -41,10 +42,10 @@ function LoginForm(props) {
                 {errorMessage}
           </Alert>
           <Form.Group className="mb-3" controlId="username">
-            <Form.Label>email</Form.Label>
+            <Form.Label>username</Form.Label>
             <Form.Control
               type="text"
-              value={username} placeholder="Example: s323195@studenti.polito.it"
+              value={username} placeholder="Example: admin"
               onChange={(ev) => setUsername(ev.target.value)}
               required={true}
             />
@@ -58,7 +59,7 @@ function LoginForm(props) {
               required={true} minLength={6}
               />
           </Form.Group>
-          <Button className="mt-3" type="submit">Login</Button>
+            <Button className="mt-3 btn-black" type="submit">Login</Button>
         </Form>
       </Col>
     </Row>

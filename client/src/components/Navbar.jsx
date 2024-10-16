@@ -22,7 +22,7 @@ export function NavigationBar(props) {
           {props.loggedIn ? (
             <div className="d-flex align-items-center">
               <i className="bi bi-person-circle text-white me-2 my-icons"></i>
-              <h5 className="text-white">Welcome, {props.user.name}</h5>
+              <h5 className="text-white mt-1">Welcome, {props.user.name}</h5>
               <Dropdown>
                 <Dropdown.Toggle
                   variant="link"
@@ -30,10 +30,8 @@ export function NavigationBar(props) {
                   className="my-arrow-dropdown"
                 >
                 </Dropdown.Toggle>
-
                 <Dropdown.Menu className="dropdown-menu-end me-2">
                   {location.pathname !== '/' && <Dropdown.Item onClick={() => navigate('/')}><i className="bi bi-house-door"></i> Home</Dropdown.Item>}
-                  {location.pathname!== '/history/games' && <Dropdown.Item onClick={() => navigate('/history/games')}><i className="bi bi-clock-history"></i> History</Dropdown.Item>}
                   <Dropdown.Divider />
                   <Dropdown.Item onClick={handleLogout} className="text-danger"><i className="bi bi-box-arrow-right"></i> Logout</Dropdown.Item>
                 </Dropdown.Menu>
@@ -52,5 +50,3 @@ export function NavigationBar(props) {
     </Navbar>
   );
 }
-
-

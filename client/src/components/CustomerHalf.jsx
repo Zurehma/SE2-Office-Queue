@@ -1,70 +1,50 @@
 import React, { useState, useEffect } from 'react';
 import QRCode from 'react-qr-code';
 import backgroundImage from '../assets/backgroundCustomer.jpg'; 
+import '../styles.css'
 
-const CustomerHalf = () => {
+const CustomerHalf = (props) => {
+  console.log(props.ticket.ticket);
+  console.log(props.ticket.estimatedWaitTime);
+  
+  
   return (
     <>
-      <img src={backgroundImage} alt="Background Image" style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100vh',
-        objectFit: 'cover',
-        zIndex: -1
-      }} />
-      <CustomerHalfContainer />
+      <img
+        src={backgroundImage}
+        alt="Background Image"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100vh',
+          objectFit: 'cover',
+          zIndex: -1
+        }}
+      />
+      <CustomerHalfContainer error={props.error} setError={props.setError} ticketInfo={props.ticket}  />
     </>
   );
-}
+};
 
-
-
-const CustomerHalfContainer = () => {
-  const [ticketNumber, setTicketNumber] = useState('');
-  const [estimatedTime, setEstimatedTime] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    const fetchTicketData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/api/service/ticket', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ service: 'shipping and RECEIVING' }),
-        });
-
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-
-        const data = await response.json();
-
-        setTicketNumber(data.ticketNumber);
-        setEstimatedTime(data.estimatedTime);
-      } catch (error) {
-        console.error('Error fetching ticket data:', error);
-        setError('Failed to fetch ticket data');
-      } finally {
-        setLoading(false); 
-      }
-    };
-
-    fetchTicketData();
-  }, []);
-
-  if (loading) {
-    return <div style={{ color: 'white' }}>Loading...</div>;
-  }
-
-  if (error) {
-    return <div style={{ color: 'red' }}>{error}</div>; 
-  }
+const CustomerHalfContainer = (props) => {
+  console.log('ffffffffffffff');
   
+  const ticket = props.ticketInfo.ticket;
+  const time = props.ticketInfo.estimatedWaitTime;
+
+  
+  
+  
+  
+
+  if (props.error) {
+    return <div style={{ color: 'red' }}>{props.error}</div>; 
+  }
+
+  // Ensure you access the ticket number correctly
+  const ticketNumber = (ticket || 'N/A');  // Assuming `ticket` has a `ticket` field
 
   return (
     <div className="container vh-100 d-flex align-items-center justify-content-center">
@@ -72,22 +52,28 @@ const CustomerHalfContainer = () => {
         <div className="col-md-6 d-flex flex-column justify-content-center align-items-center">
           <div className="info-container text-center">
             <h2 style={{ color: 'white', fontWeight: 'bold', fontSize: '3rem' }}>
-              Your Ticket: {ticketNumber}
+              Your Ticket: {ticketNumber}  {/* Display the ticket number */}
             </h2>
-            <p
-              className={estimatedTime > 15 ? 'text-danger' : 'text-white'}
+            <p  
+              className={time > 15 ? 'text-danger' : 'text-white'}
               style={{ fontWeight: 'bold' }}
             >
-              Estimated waiting time: {estimatedTime} minutes
+              
+              Estimated waiting time: {time} minutes
             </p>
-            <div className="qr-code-container">
-              <QRCode value={ticketNumber} />
-            </div>
+            {ticketNumber !== 'N/A' ? (
+              <div className="qr-code-container">
+                <QRCode value={ticketNumber} />  {/* Generate QR code for ticket number */}
+              </div>
+            ) : (
+              <p style={{ color: 'red' }}>No ticket available to generate QR code.</p>
+            )}
           </div>
         </div>
       </div>
     </div>
   );
 };
+
 
 export default CustomerHalf;
